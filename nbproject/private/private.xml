@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Duplas%20de%203/src/jide/Sintactico.java</file>
-            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Duplas%20de%203/src/jide/ide.java</file>
-            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Duplas%20de%203/src/jide/Semantico.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/Alexer.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/ide.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/Tokens.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/Alexer.flex</file>
         </group>
     </open-files>
 </project-private>

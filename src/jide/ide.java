@@ -32,7 +32,7 @@ import jide.Sintactico;
  * @author juanp
  */
 public class ide extends javax.swing.JFrame {
-    
+
     Linea Linea;
     Directorio direc;
     HashMap<Integer, Map<String, String>> tablaSimbolos;
@@ -93,7 +93,7 @@ public class ide extends javax.swing.JFrame {
         DefaultStyledDocument doc = new DefaultStyledDocument() {
             public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a);
-                
+
                 String text = getText(0, getLength());
                 int before = findLastNonWordChar(text, offset);
                 if (before < 0) {
@@ -102,7 +102,7 @@ public class ide extends javax.swing.JFrame {
                 int after = findFirstNonWordChar(text, offset + str.length());
                 int wordL = before;
                 int wordR = before;
-                
+
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
                         if (text.substring(wordL, wordR).matches("(\\W)*(programa|procedimiento|funcion|ent|flot|car|cad|booleano|imprimir|leer|si|entonces|sn|para|incremento|decremento|paso|verdadero|falso)")) {
@@ -115,10 +115,10 @@ public class ide extends javax.swing.JFrame {
                     wordR++;
                 }
             }
-            
+
             public void romeve(int offs, int len) throws BadLocationException {
                 super.remove(offs, len);
-                
+
                 String text = getText(0, getLength());
                 int before = findLastNonWordChar(text, offs);
                 if (before < 0) {
@@ -126,14 +126,14 @@ public class ide extends javax.swing.JFrame {
                 }
             }
         };
-        
+
         JTextPane txt = new JTextPane(doc);
         String temp = jTPCodigo.getText();
         jTPCodigo.setStyledDocument(txt.getStyledDocument());
         jTPCodigo.setText(temp);
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -562,7 +562,7 @@ public class ide extends javax.swing.JFrame {
 
     private void BTNCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNCompilarActionPerformed
         // TODO add your handling code here:
-        Sintactico obs = new Sintactico();
+        //Sintactico obs = new Sintactico();
         boolean ban = true;
         direc.Guardar(this);
         clearAllComp();
@@ -592,19 +592,21 @@ public class ide extends javax.swing.JFrame {
             while (ban) {
                 //Se inicia un bucle while que continuará hasta que se hayan producido todos los tokens.
                 Tokens tokens = lexer.yylex();
-                obs.originalToken = "" + lexer.lexeme;
+                //obs.originalToken = "" + lexer.lexeme;
                 //System.out.println(tokens);
                 //En cada iteración del bucle while, se llama al método yylex() del objeto Lexer para obtener el siguiente token.
-                if (tokens == null || !obs.error.equals("")) {
+                if (tokens == null //|| !obs.error.equals("")
+                        ) {
+                    /*
                     if (obs.error.equals("")) {
                         obs.Analisis("$", c.linea + 1);
-                    }
-                    JTPError.setText(obs.error);
+                    }*/
+                    //JTPError.setText(obs.error);
                     resultado += "$";
                     //Si se ha llegado al final del archivo, se agrega el carácter "$" a la cadena resultado y se muestra en el componente jTPLexico.
                     jTPLexico.setText(resultado);
-                    JTPSintactico.setText(obs.Resultado());
-                    JTPCI.setText(obs.middleCode);
+                    //JTPSintactico.setText(obs.Resultado());
+                    //JTPCI.setText(obs.middleCode);
                     return;
                 }
                 switch (tokens) {
@@ -616,7 +618,7 @@ public class ide extends javax.swing.JFrame {
                         resultado += "$";
                         jTPLexico.setText(resultado);
                         //JTPSintactico.setText(obs.Resultado());
-                        JTPError.setText(obs.error);
+                        //JTPError.setText(obs.error);
                         /*if (lexer.lexeme.equals("" + '"')) {
 
                             ban = false;
@@ -627,59 +629,18 @@ public class ide extends javax.swing.JFrame {
                             JTPError.setText(obs.error);
                         }*/
                         break;
-                    case id:
-                    case cadena:
-                    case caracter:
-                    case cad:
-                    case si:
-                    case para:
-                    case entonces:
-                    case sn:
-                    case incremento:
-                    case num:
+                    case program, idp, print, read, then, id, num, litcar, litcad:
                         resultado += tokens + "\n";
-                        obs.Analisis("" + tokens, c.linea + 1);
+                        //obs.Analisis("" + tokens, c.linea + 1);
                         break;
-                    case punto_coma:
-                    case mas:
-                    case ent:
-                    case menos:
-                    case parentesis_abre:
-                    case parentesis_cierra:
-                    case corchete_abre:
-                    case corchete_cierra:
-                    case llave_abre:
-                    case llave_cierra:
-                    case igual:
-                    case division:
-                    case multiplicacion:
-                    case menor_que:
-                    case mayor_que:
-                    case negacion:
-                    case or:
-                    case and:
-                    case coma:
-                    case punto:
-                    case dos_puntos:
-                    case comparacion:
-                    case modulo:
-                    case flot:
-                    case car:
+                    case open_key, close_key, open_parenth, close_parenth, integer, floatType, character, ifStr, elseStr, whileStr, comma, semicolon, plus, minus, mult, div, equal, less_than, greater_than, different_to, equals_to, less_or_equals, greater_or_equals:
                         resultado += lexer.lexeme + "\n";
-                        obs.Analisis("" + lexer.lexeme, c.linea + 1);
+                        //obs.Analisis("" + lexer.lexeme, c.linea + 1);
                         break;
                     default:
                         resultado += tokens + "\n";
                         //obs.Analisis("" + tokens, c.linea + 1);
                         break;
-                }
-                if (!("" + tokens).equals("Error")) {
-                    tablaSimbolos.put(i, new HashMap<String, String>());
-                    tablaSimbolos.get(i).put("Lexema", lexer.lexeme);
-                    tablaSimbolos.get(i).put("Token", "" + tokens);
-                    //tablaSimbolos.get(i).put("Linea", "" + (c.linea + 1));
-                    i++;
-                    //System.out.println(tablaSimbolos);
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -756,7 +717,7 @@ public class ide extends javax.swing.JFrame {
         Linea = new Linea(jTPCodigo);
         jScrollPane1.setRowHeaderView(Linea);
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -788,12 +749,12 @@ public class ide extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public void clearAllComp() {
         jTPLexico.setText("");
         JTPSintactico.setText("");
         JTPError.setText("");
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

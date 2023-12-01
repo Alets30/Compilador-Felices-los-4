@@ -1,4 +1,28 @@
-int y,z, u;
-float x;
-char d;
-y= x+3/5- z*(4+8*5);
+program Hola {
+print()
+int a,b,c
+float
+char
+read
+if
+then
+else
+while
+,
+;
+1231213.231321
+"abcds"
+'a'
++
+-
+*
+/
+=
+<
+>
+!=
+<=
+>=
+==
+;
+}
