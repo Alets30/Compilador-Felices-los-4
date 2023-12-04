@@ -562,7 +562,7 @@ public class ide extends javax.swing.JFrame {
 
     private void BTNCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNCompilarActionPerformed
         // TODO add your handling code here:
-        //Sintactico obs = new Sintactico();
+        Sintactico obs = new Sintactico();
         boolean ban = true;
         direc.Guardar(this);
         clearAllComp();
@@ -592,54 +592,52 @@ public class ide extends javax.swing.JFrame {
             while (ban) {
                 //Se inicia un bucle while que continuará hasta que se hayan producido todos los tokens.
                 Tokens tokens = lexer.yylex();
-                //obs.originalToken = "" + lexer.lexeme;
+                obs.originalToken = "" + lexer.lexeme;
                 //System.out.println(tokens);
                 //En cada iteración del bucle while, se llama al método yylex() del objeto Lexer para obtener el siguiente token.
-                if (tokens == null //|| !obs.error.equals("")
-                        ) {
-                    /*
+                if (tokens == null || !obs.error.equals("")) {
                     if (obs.error.equals("")) {
                         obs.Analisis("$", c.linea + 1);
-                    }*/
-                    //JTPError.setText(obs.error);
+                    }
+                    JTPError.setText(obs.error);
                     resultado += "$";
                     //Si se ha llegado al final del archivo, se agrega el carácter "$" a la cadena resultado y se muestra en el componente jTPLexico.
                     jTPLexico.setText(resultado);
-                    //JTPSintactico.setText(obs.Resultado());
+                    JTPSintactico.setText(obs.Resultado());
                     //JTPCI.setText(obs.middleCode);
                     return;
                 }
                 switch (tokens) {
                     case Error:
-                        //obs.error += "Error lexico en la linea " + (c.linea + 1) + " con el lexema " + lexer.lexeme + "\n";
+                        obs.error += "Error lexico en la linea " + (c.linea + 1) + " con el lexema " + lexer.lexeme + "\n";
                         //Si el token es de tipo "Error", se agrega una cadena que indica que se encontró un símbolo no definido en la línea correspondiente a resultado.
                         ban = false;
-                        //obs.Analisis("$", c.linea + 1);
+                        obs.Analisis("$", c.linea + 1);
                         resultado += "$";
                         jTPLexico.setText(resultado);
-                        //JTPSintactico.setText(obs.Resultado());
-                        //JTPError.setText(obs.error);
-                        /*if (lexer.lexeme.equals("" + '"')) {
+                        JTPSintactico.setText(obs.Resultado());
+                        JTPError.setText(obs.error);
+                        if (lexer.lexeme.equals("" + '"')) {
 
                             ban = false;
-                            //obs.Analisis("$", c.linea + 1);
+                            obs.Analisis("$", c.linea + 1);
                             resultado += "$";
                             jTPLexico.setText(resultado);
-                            //JTPSintactico.setText(obs.Resultado());
+                            JTPSintactico.setText(obs.Resultado());
                             JTPError.setText(obs.error);
-                        }*/
+                        }
                         break;
                     case program, idp, print, read, then, id, num, litcar, litcad:
                         resultado += tokens + "\n";
-                        //obs.Analisis("" + tokens, c.linea + 1);
+                        obs.Analisis("" + tokens, c.linea + 1);
                         break;
                     case open_key, close_key, open_parenth, close_parenth, integer, floatType, character, ifStr, elseStr, whileStr, comma, semicolon, plus, minus, mult, div, equal, less_than, greater_than, different_to, equals_to, less_or_equals, greater_or_equals:
                         resultado += lexer.lexeme + "\n";
-                        //obs.Analisis("" + lexer.lexeme, c.linea + 1);
+                        obs.Analisis("" + lexer.lexeme, c.linea + 1);
                         break;
                     default:
                         resultado += tokens + "\n";
-                        //obs.Analisis("" + tokens, c.linea + 1);
+                        obs.Analisis("" + tokens, c.linea + 1);
                         break;
                 }
             }

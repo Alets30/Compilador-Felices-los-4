@@ -1,28 +1,9 @@
-program Hola {
-print()
-int a,b,c
-float
-char
-read
-if
-then
-else
-while
-,
-;
-1231213.231321
-"abcds"
-'a'
-+
--
-*
-/
-=
-<
->
-!=
-<=
->=
-==
-;
+program Hola;
+int a, g;
+float b, c;
+char d,e,f;
+{
+a = read();
+a = 4 + 5;
+print('v');
 }

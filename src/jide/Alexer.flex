@@ -63,7 +63,7 @@ int nu=0;
 <YYINITIAL> {L}({L}{D})* {if (estado == 1) { // Si se encontró la palabra clave "Programa"
         c.linea = yyline;
         lexeme = yytext();
-        estado = 0;
+        estado = 2;
         return idp; 
     } else { // Si no se ha encontrado "Programa"
         c.linea = yyline;

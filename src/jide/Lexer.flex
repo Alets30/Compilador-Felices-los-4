@@ -77,23 +77,13 @@ int nu=0;
 <YYINITIAL> "==" {c.linea=yyline; lexeme=yytext();return comparacion;}
 <YYINITIAL> "||" {c.linea=yyline; lexeme=yytext();return or;}
 <YYINITIAL> "&&" {c.linea=yyline; lexeme=yytext();return and;}
-<YYINITIAL> {D} {c.linea=yyline; lexeme=yytext();return Numero;}
+<YYINITIAL> {D} {c.linea=yyline; lexeme=yytext();return num;}
 <YYINITIAL> {L}({L}{D})* {if (estado == 1) { // Si se encontró la palabra clave "Programa"
         c.linea = yyline;
         lexeme = yytext();
-        estado = 0;
+        estado = 2;
         return IDP; 
-    }else if(estado == 2){
-        c.linea = yyline;
-        lexeme = yytext();
-        estado = 0;
-        return IDK; 
-    }else if(estado == 3){
-        c.linea = yyline;
-        lexeme = yytext();
-        estado = 0;
-        return IDF; 
-    } else { // Si no se ha encontrado "Programa"
+    }else { // Si no se ha encontrado "Programa"
         c.linea = yyline;
         lexeme = yytext();
         return ID; // Token para identificador normal

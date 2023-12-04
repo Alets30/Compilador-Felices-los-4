@@ -126,7 +126,7 @@ public class Sintactico {
         {"", "", "", "P24", "P24", "", "", "", "", "", "", "P24", "", "", "P24", "", "", "P24", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}};
     private Stack<String> stack;
     private Stack<String> auxStack;
-    private final Semantico sem = new Semantico();
+    //private final Semantico sem = new Semantico();
 
     public Sintactico() {
         stack = new Stack();
@@ -143,7 +143,7 @@ public class Sintactico {
     }
 
     private void BuscarElemento(String token, int linea) {
-        //System.out.println(token);
+        System.out.println(token);
         for (it = 0; it < tnt.length; it++) {
             if (tnt[it].equals(token)) {
                 //System.out.println(table[Integer.parseInt(stack.peek().split("I")[1])][it]);
@@ -164,7 +164,7 @@ public class Sintactico {
     private void Desplazamiento(String token, String estado, int linea) {
         stack.push(token);
         stack.push(estado);
-        switch (estado) {
+        /*switch (estado) {
             case "I7" -> {
                 sem.asign = originalToken;
                 //sem.middleCode += "V1 = " + originalToken + "\n";
@@ -191,13 +191,14 @@ public class Sintactico {
             }
             case "I14", "I15", "I20", "I27", "I28", "I30", "I31" ->
                 sem.AddOpStack(token, linea);
-        }
+        }*/
         AñadirResultado();
         //System.out.println(result);
     }
 
     private void Reduccion(String token, int production, int line) {
         int state;
+        /*
         switch (production) {
             case 9, 10, 11 -> {
                 //System.out.println(token);
@@ -211,7 +212,7 @@ public class Sintactico {
                     middleCode = sem.middleCode;
                 }
             }
-        }
+        }*/
         while (!productions[production].split(">")[1].equals("vacia")) {
             //System.out.println(productions[production].split(">")[1].split(" ")[0]);
             if (stack.pop().equals(productions[production].split(">")[1].split(" ")[0])) {
@@ -255,7 +256,7 @@ public class Sintactico {
     public String Error(int I) {
         int i, it;
         String expected = "";
-        for (i = 0; i <= 15; i++) {
+        for (i = 0; i <= 32; i++) {
             if (!table[I][i].equals("")) {
                 expected += tnt[i] + ", ";
             }
