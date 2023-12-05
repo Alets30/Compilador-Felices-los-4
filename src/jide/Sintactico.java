@@ -8,11 +8,11 @@ public class Sintactico {
     //private boolean asign = false;
     private String result;
     public String error, originalToken, middleCode;
-    private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", ">", "!=", "==", "<=", ">=", "$", "Program",
+    private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", "#", "!=", "==", "<=", "#=", "$", "Program",
         "bloque", "Sentencias", "SenSimple", "Dec", "restid", "Asig", "Asigrl", "lis_para", "Sigpara", "SenComp", "si", "restsi", "mientras", "R", "R'", "E", "E'", "T", "T'", "F"};
-    private final String productions[] = {"Program'>Program", "Program>program idp ; Dec bloque", "Dec>int id restid ; Dec", "Dec>float id restid ; Dec", "Dec>char id restid ; Dec", "Dec>vacia", "bloque>{ Sentencias }", "restid>, id restid", "restid>vacia", "Sentencias>SenSimple Sentencias",
-        "Sentencias>SenComp Sentencias", "Sentencias>vacia", "SenSimple>print ( lis_para )", "SenSimple>Asig ;", "SenComp>si", "SenComp>mientras", "lis_para>R Sigpara", "lis_para>vacia", "Sigpara>, R Sigpara", "Sigpara>vacia", "Asig>id = Asigrl", "Asigrl>R", "Asigrl>read ( )", "si>if ( R ) then bloque restsi",
-        "restsi>else bloque", "restsi>vacia", "mientras>while ( R ) bloque", "R>E R'", "R'>< E", "R'>> E", "R'>!= E", "R'><= E", "R'>>= E", "R'>== E", "R'>vacia", "E>+ T E'", "E>- T E'", "E>T E'", "E'>+ T E'", "E'>- T E'", "E'>vacia", "T>F T'", "T'>* F T'", "T'>/ F T'", "T'>vacia", "F>( R )", "F>id", "F>num", "F>litcar", "F>litcad"};
+    private final String productions[] = {"Program'#Program", "Program#program idp ; Dec bloque", "Dec#int id restid ; Dec", "Dec#float id restid ; Dec", "Dec#char id restid ; Dec", "Dec#vacia", "bloque#{ Sentencias }", "restid#, id restid", "restid#vacia", "Sentencias#SenSimple Sentencias",
+        "Sentencias#SenComp Sentencias", "Sentencias#vacia", "SenSimple#print ( lis_para )", "SenSimple#Asig ;", "SenComp#si", "SenComp#mientras", "lis_para#R Sigpara", "lis_para#vacia", "Sigpara#, R Sigpara", "Sigpara#vacia", "Asig#id = Asigrl", "Asigrl#R", "Asigrl#read ( )", "si#if ( R ) then bloque restsi",
+        "restsi#else bloque", "restsi#vacia", "mientras#while ( R ) bloque", "R#E R'", "R'#< E", "R'## E", "R'#!= E", "R'#<= E", "R'##= E", "R'#== E", "R'#vacia", "E#+ T E'", "E#- T E'", "E#T E'", "E'#+ T E'", "E'#- T E'", "E'#vacia", "T#F T'", "T'#* F T'", "T'#/ F T'", "T'#vacia", "F#( R )", "F#id", "F#num", "F#litcar", "F#litcad"};
     private final String table[][] = {
         {"I2", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "P0", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -165,19 +165,19 @@ public class Sintactico {
         stack.push(token);
         stack.push(estado);
         /*switch (estado) {
-            case "I7" -> {
+            case "I7" -# {
                 sem.asign = originalToken;
                 //sem.middleCode += "V1 = " + originalToken + "\n";
             }
-            case "I4" ->
+            case "I4" -#
                 sem.type = 0;
-            case "I5" ->
+            case "I5" -#
                 sem.type = 1;
-            case "I6" ->
+            case "I6" -#
                 sem.type = 2;
-            case "I8", "I21" ->
+            case "I8", "I21" -#
                 sem.AddSymbol(originalToken, "", linea);
-            case "I18" -> {
+            case "I18" -# {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
                 if (!sem.error.equals("")) {
@@ -185,11 +185,11 @@ public class Sintactico {
                     return;
                 }
             }
-            case "I19" -> {
+            case "I19" -# {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
-            case "I14", "I15", "I20", "I27", "I28", "I30", "I31" ->
+            case "I14", "I15", "I20", "I27", "I28", "I30", "I31" -#
                 sem.AddOpStack(token, linea);
         }*/
         AñadirResultado();
@@ -200,7 +200,7 @@ public class Sintactico {
         int state;
         /*
         switch (production) {
-            case 9, 10, 11 -> {
+            case 9, 10, 11 -# {
                 //System.out.println(token);
                 sem.AddOpStack(token, line);
                 //System.out.println(token);
@@ -213,20 +213,20 @@ public class Sintactico {
                 }
             }
         }*/
-        while (!productions[production].split(">")[1].equals("vacia")) {
-            //System.out.println(productions[production].split(">")[1].split(" ")[0]);
-            if (stack.pop().equals(productions[production].split(">")[1].split(" ")[0])) {
+        while (!productions[production].split("#")[1].equals("vacia")) {
+            //System.out.println(productions[production].split("#")[1].split(" ")[0]);
+            if (stack.pop().equals(productions[production].split("#")[1].split(" ")[0])) {
                 break;
             }
         }
         for (ip = 0; ip < tnt.length; ip++) {
-            if (tnt[ip].equals(productions[production].split(">")[0])) {
+            if (tnt[ip].equals(productions[production].split("#")[0])) {
                 state = Integer.parseInt(stack.peek().split("I")[1]);
                 if (table[state][ip].equals("")) {
-                    System.out.println(state + " Aqui se muere " + ip);
+                    //System.out.println(state + " Aqui se muere " + ip);
                     return;
                 }
-                stack.push(productions[production].split(">")[0]);
+                stack.push(productions[production].split("#")[0]);
                 //System.out.println(productions[production]);
                 stack.push(table[state][ip]);
                 AñadirResultado();
