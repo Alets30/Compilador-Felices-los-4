@@ -1,9 +1,5 @@
 program Hola;
-int a, g;
-float b, c;
-char d,e,f;
 {
-a = read();
-a = 4 + 5;
+a = -5+(4 + 5)*c+d;
 print('v');
 }

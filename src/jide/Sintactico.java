@@ -12,7 +12,7 @@ public class Sintactico {
         "bloque", "Sentencias", "SenSimple", "Dec", "restid", "Asig", "Asigrl", "lis_para", "Sigpara", "SenComp", "si", "restsi", "mientras", "R", "R'", "E", "E'", "T", "T'", "F"};
     private final String productions[] = {"Program'>Program", "Program>program idp ; Dec bloque", "Dec>int id restid ; Dec", "Dec>float id restid ; Dec", "Dec>char id restid ; Dec", "Dec>vacia", "bloque>{ Sentencias }", "restid>, id restid", "restid>vacia", "Sentencias>SenSimple Sentencias",
         "Sentencias>SenComp Sentencias", "Sentencias>vacia", "SenSimple>print ( lis_para )", "SenSimple>Asig ;", "SenComp>si", "SenComp>mientras", "lis_para>R Sigpara", "lis_para>vacia", "Sigpara>, R Sigpara", "Sigpara>vacia", "Asig>id = Asigrl", "Asigrl>R", "Asigrl>read ( )", "si>if ( R ) then bloque restsi",
-        "restsi>else bloque", "restsi>vacia", "mientras>while ( R ) bloque", "R>E R'", "R'>< E", "R'>> E", "R'>!= E", "R'><= E", "R'>>= E", "R'>== E","R'>vacia","E>+ T E'","E>- T E'","E>T E'","E'>+ T E'","E'>- T E'","E'>vacia","T>F T'","T'>* F T'","T'>/ F T'","T'>vacia","F>( R )","F>id","F>num","F>litcar","F>litcad"};
+        "restsi>else bloque", "restsi>vacia", "mientras>while ( R ) bloque", "R>E R'", "R'>< E", "R'>> E", "R'>!= E", "R'><= E", "R'>>= E", "R'>== E", "R'>vacia", "E>+ T E'", "E>- T E'", "E>T E'", "E'>+ T E'", "E'>- T E'", "E'>vacia", "T>F T'", "T'>* F T'", "T'>/ F T'", "T'>vacia", "F>( R )", "F>id", "F>num", "F>litcar", "F>litcad"};
     private final String table[][] = {
         {"I2", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "P0", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -47,7 +47,7 @@ public class Sintactico {
         {"", "", "", "P10", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "", "", "I47", "P17", "", "", "", "", "", "", "", "", "", "", "I48", "I49", "I50", "I51", "I43", "I44", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I40", "", "", "", "", "", "I41", "", "I42", "", "I45", "", "I46"},
         {"", "", "", "P13", "P13", "", "", "", "", "", "", "P13", "", "", "P13", "", "", "P13", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "I47", "", "", "", "", "I54", "", "", "", "", "", "", "I48", "I49", "I50", "I51", "I43", "I44", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I52", "", "", "", "", "", "", "", "I53", "I42", "", "I45", "", "I46"},
+        {"", "", "", "", "", "I47", "", "", "", "", "I54", "", "", "", "", "", "", "I48", "I49", "I50", "I51", "I43", "I44", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I52", "", "", "", "", "", "", "I53", "", "I42", "", "I45", "", "I46"},
         {"", "", "", "", "", "I47", "", "", "", "", "", "", "", "", "", "", "", "I48", "I49", "I50", "I51", "I43", "I44", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I55", "", "I42", "", "I45", "", "I46"},
         {"", "", "", "", "", "I47", "", "", "", "", "", "", "", "", "", "", "", "I48", "I49", "I50", "I51", "I43", "I44", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I56", "I42", "", "I45", "", "I46"},
         {"", "", "P5", "", "", "", "", "I6", "I7", "I8", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I57", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -223,6 +223,7 @@ public class Sintactico {
             if (tnt[ip].equals(productions[production].split(">")[0])) {
                 state = Integer.parseInt(stack.peek().split("I")[1]);
                 if (table[state][ip].equals("")) {
+                    System.out.println(state + " Aqui se muere " + ip);
                     return;
                 }
                 stack.push(productions[production].split(">")[0]);
