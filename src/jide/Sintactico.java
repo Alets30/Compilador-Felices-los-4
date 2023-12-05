@@ -8,11 +8,11 @@ public class Sintactico {
     //private boolean asign = false;
     private String result;
     public String error, originalToken, middleCode;
-    private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", "#", "!=", "==", "<=", "#=", "$", "Program",
+    private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", ">", "!=", "==", "<=", "#=", "$", "Program",
         "bloque", "Sentencias", "SenSimple", "Dec", "restid", "Asig", "Asigrl", "lis_para", "Sigpara", "SenComp", "si", "restsi", "mientras", "R", "R'", "E", "E'", "T", "T'", "F"};
     private final String productions[] = {"Program'#Program", "Program#program idp ; Dec bloque", "Dec#int id restid ; Dec", "Dec#float id restid ; Dec", "Dec#char id restid ; Dec", "Dec#vacia", "bloque#{ Sentencias }", "restid#, id restid", "restid#vacia", "Sentencias#SenSimple Sentencias",
         "Sentencias#SenComp Sentencias", "Sentencias#vacia", "SenSimple#print ( lis_para )", "SenSimple#Asig ;", "SenComp#si", "SenComp#mientras", "lis_para#R Sigpara", "lis_para#vacia", "Sigpara#, R Sigpara", "Sigpara#vacia", "Asig#id = Asigrl", "Asigrl#R", "Asigrl#read ( )", "si#if ( R ) then bloque restsi",
-        "restsi#else bloque", "restsi#vacia", "mientras#while ( R ) bloque", "R#E R'", "R'#< E", "R'## E", "R'#!= E", "R'#<= E", "R'##= E", "R'#== E", "R'#vacia", "E#+ T E'", "E#- T E'", "E#T E'", "E'#+ T E'", "E'#- T E'", "E'#vacia", "T#F T'", "T'#* F T'", "T'#/ F T'", "T'#vacia", "F#( R )", "F#id", "F#num", "F#litcar", "F#litcad"};
+        "restsi#else bloque", "restsi#vacia", "mientras#while ( R ) bloque", "R#E R'", "R'#< E", "R'#> E", "R'#!= E", "R'#<= E", "R'#>= E", "R'#== E", "R'#vacia", "E#+ T E'", "E#- T E'", "E#T E'", "E'#+ T E'", "E'#- T E'", "E'#vacia", "T#F T'", "T'#* F T'", "T'#/ F T'", "T'#vacia", "F#( R )", "F#id", "F#num", "F#litcar", "F#litcad"};
     private final String table[][] = {
         {"I2", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "P0", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -120,9 +120,9 @@ public class Sintactico {
         {"", "", "", "", "", "", "P39", "", "", "", "", "", "", "", "", "P39", "P39", "", "", "", "", "", "", "", "", "", "P39", "P39", "P39", "P39", "P39", "P39", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "", "", "", "P42", "", "", "", "", "", "", "", "", "P42", "P42", "", "", "", "", "P42", "P42", "", "", "", "P42", "P42", "P42", "P42", "P42", "P42", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "", "", "", "P43", "", "", "", "", "", "", "", "", "P43", "P43", "", "", "", "", "P43", "P43", "", "", "", "P43", "P43", "P43", "P43", "P43", "P43", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "", "P25", "P25", "", "", "", "", "", "", "P25", "", "I08", "P25", "", "", "P25", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I107", "", "", "", "", "", "", "", ""},
+        {"", "", "", "P25", "P25", "", "", "", "", "", "", "P25", "", "I108", "P25", "", "", "P25", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I107", "", "", "", "", "", "", "", ""},
         {"", "", "", "P23", "P23", "", "", "", "", "", "", "P23", "", "", "P23", "", "", "P23", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-        {"", "", "I10", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I09", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+        {"", "", "I10", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I109", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
         {"", "", "", "P24", "P24", "", "", "", "", "", "", "P24", "", "", "P24", "", "", "P24", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}};
     private Stack<String> stack;
     private Stack<String> auxStack;
