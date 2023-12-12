@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class Semantico {
 
+    public boolean isAsign = false;
     public String error = "";
     public int type;
     public String asign = "";
@@ -52,6 +53,14 @@ public class Semantico {
                 semStack.push("" + RecognizeNumber(originalToken));
                 expPosf.push(originalToken);
                 //System.out.println(semStack);
+                break;
+            case "litcar":
+                //System.out.println(token);
+                semStack.push("2");
+                expPosf.push(originalToken);
+                break;
+            case "litcad":
+                error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
                 break;
             default:
                 if (sTable.containsKey(originalToken)) {
@@ -136,13 +145,14 @@ public class Semantico {
                 }
                 if (semStack.size() == 2) {
                     if (semTable[Integer.parseInt("" + sTable.get(asign).get("tipo"))][Integer.parseInt(semStack.peek())] == -1
-                            && !sTable.get(asign).get("tipo").equals("2") && !semStack.peek().equals("2")) {
+                            && !(sTable.get(asign).get("tipo").equals("2") && semStack.peek().equals("2"))) {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
                     }
                 }
                 if (token.equals(";")) {
                     if (!semStack.peek().equals("$") && semStack.size() <= 2) {
                         semStack.pop();
+                        isAsign = false;
                     } else {
                         error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
                         return;

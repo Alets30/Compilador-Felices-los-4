@@ -167,6 +167,7 @@ public class Sintactico {
         switch (estado) {
             case "I21" -> {
                 sem.asign = originalToken;
+                sem.isAsign = true;
                 //sem.middleCode += "V1 = " + originalToken + "\n";
             }
             case "I6" ->
@@ -177,7 +178,7 @@ public class Sintactico {
                 sem.type = 2;
             case "I11", "I12", "I13", "I37" ->
                 sem.AddSymbol(originalToken, "", linea);
-            case "I48" -> {
+            case "I48", "I51" -> {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
                 if (!sem.error.equals("")) {
@@ -185,7 +186,7 @@ public class Sintactico {
                     return;
                 }
             }
-            case "I49" -> {
+            case "I49", "I50" -> {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
