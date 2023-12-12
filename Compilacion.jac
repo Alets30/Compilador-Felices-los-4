@@ -3,7 +3,7 @@ int a,b;
 float z;
 char d,c;
 {
-a = 2 + 5.2 - 6;
+a = 3 + 5.2 - 6 >= 5;
 a = 2;
 d = 'a';
 while( a > b+5 ){

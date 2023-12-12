@@ -8,7 +8,7 @@ public class Sintactico {
     //private boolean asign = false;
     private String result;
     public String error, originalToken, middleCode;
-    private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", ">", "!=", "==", "<=", "#=", "$", "Program",
+    private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", ">", "!=", "==", "<=", ">=", "$", "Program",
         "bloque", "Sentencias", "SenSimple", "Dec", "restid", "Asig", "Asigrl", "lis_para", "Sigpara", "SenComp", "si", "restsi", "mientras", "R", "R'", "E", "E'", "T", "T'", "F"};
     private final String productions[] = {"Program'#Program", "Program#program idp ; Dec bloque", "Dec#int id restid ; Dec", "Dec#float id restid ; Dec", "Dec#char id restid ; Dec", "Dec#vacia", "bloque#{ Sentencias }", "restid#, id restid", "restid#vacia", "Sentencias#SenSimple Sentencias",
         "Sentencias#SenComp Sentencias", "Sentencias#vacia", "SenSimple#print ( lis_para )", "SenSimple#Asig ;", "SenComp#si", "SenComp#mientras", "lis_para#R Sigpara", "lis_para#vacia", "Sigpara#, R Sigpara", "Sigpara#vacia", "Asig#id = Asigrl", "Asigrl#R", "Asigrl#read ( )", "si#if ( R ) then bloque restsi",
@@ -190,8 +190,15 @@ public class Sintactico {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
-            case "I43", "I44", "I93", "I74", "I75", "I96", "I28", "I47", "I97" ->
+            case "I43", "I44", "I93", "I74", "I75", "I96", "I28", "I47", "I97" -> {
                 sem.AddOpStack(token, linea);
+            }
+            case "I65", "I66", "I67", "I68", "I69", "I70" -> {
+                if (sem.isAsign) {
+                    error += "Error semantico en la linea " + linea + " tipo de dato inválido.\n";
+                    return;
+                }
+            }
         }
         AñadirResultado();
         //System.out.println(result);
