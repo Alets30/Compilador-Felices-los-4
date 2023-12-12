@@ -33,7 +33,7 @@ public class Semantico {
         semStack.push("$");
         stackOp.push("$");
         expPosf.push("$");
-        middleCodeStack.push("$");
+        //middleCodeStack.push("$");
     }
 
     public void AddSymbol(String id, String value, int line) {
@@ -74,11 +74,11 @@ public class Semantico {
                 if (stackOp.peek().equals("$") || stackOp.peek().equals("(")) {
                     stackOp.push(token);
                 } else {
-                    System.out.println(stackOp);
+                    //System.out.println(stackOp);
                     do {
                         expPosf.push(stackOp.pop());
                     } while (stackOp.peek().equals("-") || stackOp.peek().equals("+"));
-                    System.out.println(semTableResult);
+                    //System.out.println(semTableResult);
                     semTableResult = semTable[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())];
                     if (semTableResult != -1) {
                         semStack.push("" + semTableResult);
@@ -135,22 +135,28 @@ public class Semantico {
                     }
                 }
                 if (semStack.size() == 2) {
-                    if (semTable[Integer.parseInt("" + sTable.get(asign).get("tipo"))][Integer.parseInt(semStack.peek())] == -1) {
+                    if (semTable[Integer.parseInt("" + sTable.get(asign).get("tipo"))][Integer.parseInt(semStack.peek())] == -1
+                            && !sTable.get(asign).get("tipo").equals("2") && !semStack.peek().equals("2")) {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
                     }
                 }
                 if (token.equals(";")) {
+                    if (!semStack.peek().equals("$") && semStack.size() <= 2) {
+                        semStack.pop();
+                    } else {
+                        error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
+                        return;
+                    }
                     //System.out.println(expPosf);
                     FlipStack();
                     //System.out.println(expPosf);
                     //System.out.println(middleCodeStack);
-                    GenerateMiddleCode();
+                    //GenerateMiddleCode();
                     System.out.println(middleCode);
                     //System.out.println(expPosf);
                 }
                 //System.out.println(semStack);
                 //System.out.println(stackOp);
-                //
                 //System.out.println(middleCode);
                 //System.out.println(middleCodeStack);
                 break;
@@ -171,7 +177,7 @@ public class Semantico {
         }
     }
 
-    private void GenerateMiddleCode() {
+    /*private void GenerateMiddleCode() {
         String middleCodeStackItem, variableString;
         while (!middleCodeStack.peek().equals("$")) {
             middleCodeStackItem = middleCodeStack.pop();
@@ -188,5 +194,5 @@ public class Semantico {
             }
         }
         middleCode += asign + " = " + "V1";
-    }
+    }*/
 }

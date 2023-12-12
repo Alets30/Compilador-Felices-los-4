@@ -126,7 +126,7 @@ public class Sintactico {
         {"", "", "", "P24", "P24", "", "", "", "", "", "", "P24", "", "", "P24", "", "", "P24", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}};
     private Stack<String> stack;
     private Stack<String> auxStack;
-    //private final Semantico sem = new Semantico();
+    private final Semantico sem = new Semantico();
 
     public Sintactico() {
         stack = new Stack();
@@ -143,7 +143,7 @@ public class Sintactico {
     }
 
     private void BuscarElemento(String token, int linea) {
-        System.out.println(token);
+        //System.out.println(token);
         for (it = 0; it < tnt.length; it++) {
             if (tnt[it].equals(token)) {
                 //System.out.println(table[Integer.parseInt(stack.peek().split("I")[1])][it]);
@@ -164,20 +164,20 @@ public class Sintactico {
     private void Desplazamiento(String token, String estado, int linea) {
         stack.push(token);
         stack.push(estado);
-        /*switch (estado) {
-            case "I7" -# {
+        switch (estado) {
+            case "I21" -> {
                 sem.asign = originalToken;
                 //sem.middleCode += "V1 = " + originalToken + "\n";
             }
-            case "I4" -#
+            case "I6" ->
                 sem.type = 0;
-            case "I5" -#
+            case "I7" ->
                 sem.type = 1;
-            case "I6" -#
+            case "I8" ->
                 sem.type = 2;
-            case "I8", "I21" -#
+            case "I11", "I12", "I13", "I37" ->
                 sem.AddSymbol(originalToken, "", linea);
-            case "I18" -# {
+            case "I48" -> {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
                 if (!sem.error.equals("")) {
@@ -185,22 +185,21 @@ public class Sintactico {
                     return;
                 }
             }
-            case "I19" -# {
+            case "I49" -> {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
-            case "I14", "I15", "I20", "I27", "I28", "I30", "I31" -#
+            case "I43", "I44", "I93", "I74", "I75", "I96", "I28", "I47", "I97" ->
                 sem.AddOpStack(token, linea);
-        }*/
+        }
         AñadirResultado();
         //System.out.println(result);
     }
 
     private void Reduccion(String token, int production, int line) {
         int state;
-        /*
         switch (production) {
-            case 9, 10, 11 -# {
+            case 35, 36, 37 -> {
                 //System.out.println(token);
                 sem.AddOpStack(token, line);
                 //System.out.println(token);
@@ -212,7 +211,7 @@ public class Sintactico {
                     middleCode = sem.middleCode;
                 }
             }
-        }*/
+        }
         while (!productions[production].split("#")[1].equals("vacia")) {
             //System.out.println(productions[production].split("#")[1].split(" ")[0]);
             if (stack.pop().equals(productions[production].split("#")[1].split(" ")[0])) {

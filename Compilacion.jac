@@ -1,8 +1,19 @@
-program Hola;
+program Hola; 
+int a,b;
+char d,c;
 {
-if( 5>3 ) then {
+a =  2 + 5.2 - 6;
+b = 2;
+d = c;
+while( a > b+5 ){
 
-}else{
+if(a+5*2>1) then {
 
+}
+else { 
+if(a+5*2>1) then {
+
+}
+}
 }
 }
