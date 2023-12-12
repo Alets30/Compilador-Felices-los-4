@@ -1,20 +1,14 @@
 program Hola; 
 int a,b;
 float z;
-char d,c;
+char d, c;
 {
-a = 3 + 5.2 - 6 >= 5;
-a = 2;
+b = 2;
 d = 'a';
-while( a > b+5 ){
-
-if(a+5*2>1) then {
-
-}
-else { 
-if(a+5*2>1) then {
-
+while( a > b + 5 ){
+if(d<a) then {
+print();
 }
 }
-}
+a = 3 + 5.2 - b;
 }

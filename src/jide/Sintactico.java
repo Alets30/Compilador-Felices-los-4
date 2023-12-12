@@ -176,22 +176,29 @@ public class Sintactico {
                 sem.type = 1;
             case "I8" ->
                 sem.type = 2;
-            case "I11", "I12", "I13", "I37" ->
+            case "I11", "I12", "I13", "I37" -> {
                 sem.AddSymbol(originalToken, "", linea);
+            }
             case "I48", "I51" -> {
-                sem.AddSemStack(token, originalToken, linea);
-                //sem.AddExpPos(originalToken);
-                if (!sem.error.equals("")) {
-                    error += sem.error;
-                    return;
+                if (sem.isAsign) {
+                    sem.AddSemStack(token, originalToken, linea);
+                    //sem.AddExpPos(originalToken);
+                    if (!sem.error.equals("")) {
+                        error += sem.error;
+                        return;
+                    }
                 }
             }
             case "I49", "I50" -> {
-                sem.AddSemStack(token, originalToken, linea);
+                if (sem.isAsign) {
+                    sem.AddSemStack(token, originalToken, linea);
+                }
                 //sem.AddExpPos(originalToken);
             }
             case "I43", "I44", "I93", "I74", "I75", "I96", "I28", "I47", "I97" -> {
-                sem.AddOpStack(token, linea);
+                if (sem.isAsign) {
+                    sem.AddOpStack(token, linea);
+                }
             }
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 if (sem.isAsign) {

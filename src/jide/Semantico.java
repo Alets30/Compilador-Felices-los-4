@@ -34,7 +34,7 @@ public class Semantico {
         semStack.push("$");
         stackOp.push("$");
         expPosf.push("$");
-        //middleCodeStack.push("$");
+        middleCodeStack.push("$");
     }
 
     public void AddSymbol(String id, String value, int line) {

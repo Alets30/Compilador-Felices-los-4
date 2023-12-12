@@ -569,7 +569,7 @@ public class ide extends javax.swing.JFrame {
         Analisis c = new Analisis();
         //Se crea una nueva instancia de la clase Analisis (presumiblemente para realizar algún tipo de análisis o verificación del código más adelante).
         File archivo = new File("Compilacion.jac");
-//        Se crea un objeto File que representa el archivo "Compilacion.jac".
+        //Se crea un objeto File que representa el archivo "Compilacion.jac".
         PrintWriter escribir;
         try {
             escribir = new PrintWriter(archivo);
