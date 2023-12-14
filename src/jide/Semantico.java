@@ -109,15 +109,16 @@ public class Semantico {
                     //System.out.println(stackOp);
                     do {
                         expPosf.push(stackOp.pop());
+                        semTableResult = semTable[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())];
+                        if (semTableResult != -1) {
+                            semStack.push("" + semTableResult);
+
+                        } else {
+                            error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
+                        }
                     } while (stackOp.peek().equals("-") || stackOp.peek().equals("+"));
                     //System.out.println(semTableResult);
-                    semTableResult = semTable[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())];
-                    if (semTableResult != -1) {
-                        semStack.push("" + semTableResult);
-                        stackOp.push(token);
-                    } else {
-                        error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
-                    }
+                    stackOp.push(token);
                 }
                 //System.out.println(stackOp);
                 break;
@@ -166,7 +167,7 @@ public class Semantico {
                         return;
                     }
                 }
-                if (semStack.size() == 2) {
+                if (semStack.size() == 2 && isAsign) {
                     if (semTable[Integer.parseInt("" + sTable.get(asign).get("tipo"))][Integer.parseInt(semStack.peek())] == -1
                             && !(sTable.get(asign).get("tipo").equals("2") && semStack.peek().equals("2"))) {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
@@ -204,6 +205,7 @@ public class Semantico {
         } else if (relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
             error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
         }
+        isWhileOrIf = false;
     }
 
     public void IdentifyOp(String token, int linea) {

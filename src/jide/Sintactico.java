@@ -191,7 +191,7 @@ public class Sintactico {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
-            case "I43", "I44", "I93", "I74", "I75", "I96", "I28", "I47", "I97" -> {
+            case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97" -> {
                 sem.AddOpStack(token, linea);
             }
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
