@@ -7,7 +7,7 @@ public class Semantico {
 
     public boolean isAsign = false, isWhileOrIf = false;
     public String error = "";
-    public int type, opType;
+    public int type, opType = -1;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -202,10 +202,11 @@ public class Semantico {
             if (relationalTable1[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
                 error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
             }
-        } else if (relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
+        } else if (opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
             error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
         }
         isWhileOrIf = false;
+        opType = -1;
     }
 
     public void IdentifyOp(String token, int linea) {

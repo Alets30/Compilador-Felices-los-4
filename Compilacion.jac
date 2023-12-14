@@ -5,9 +5,9 @@ char d, c;
 {
 b = read();
 d = 'c';
-while((2+5*8-(5)) >(2+5*8-z)){
-if(d==c) then {
-print();
+while((2+5*8-(5)) > 5){
+if(c == d) then {
+print("");
 }
 a = 3 + 5.2 - z;
 }
