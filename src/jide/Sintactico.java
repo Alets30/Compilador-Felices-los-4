@@ -180,31 +180,32 @@ public class Sintactico {
                 sem.AddSymbol(originalToken, "", linea);
             }
             case "I48", "I51" -> {
-                if (sem.isAsign) {
-                    sem.AddSemStack(token, originalToken, linea);
-                    //sem.AddExpPos(originalToken);
-                    if (!sem.error.equals("")) {
-                        error += sem.error;
-                        return;
-                    }
+                sem.AddSemStack(token, originalToken, linea);
+                //sem.AddExpPos(originalToken);
+                if (!sem.error.equals("")) {
+                    error += sem.error;
+                    return;
                 }
             }
             case "I49", "I50" -> {
-                if (sem.isAsign) {
-                    sem.AddSemStack(token, originalToken, linea);
-                }
+                sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
             case "I43", "I44", "I93", "I74", "I75", "I96", "I28", "I47", "I97" -> {
-                if (sem.isAsign) {
-                    sem.AddOpStack(token, linea);
-                }
+                sem.AddOpStack(token, linea);
             }
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
-                if (sem.isAsign) {
-                    error += "Error semantico en la linea " + linea + " tipo de dato inválido.\n";
+                sem.IdentifyOp(token, linea);
+                if (!sem.error.equals("")) {
+                    error += sem.error;
                     return;
                 }
+            }
+            case "I35", "I34" -> {
+                sem.isWhileOrIf = true;
+            }
+            case "I81", "I82" -> {
+                sem.EndWhileOrIf(linea);
             }
         }
         AñadirResultado();

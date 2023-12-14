@@ -5,16 +5,31 @@ import java.util.HashMap;
 
 public class Semantico {
 
-    public boolean isAsign = false;
+    public boolean isAsign = false, isWhileOrIf = false;
     public String error = "";
-    public int type;
+    public int type, opType;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
     private final int semTable[][] = {
-        {0, 1, -1},
-        {1, 1, -1},
-        {-1, -1, -1}
+        {0, 1, -1, -1},
+        {1, 1, -1, -1},
+        {-1, -1, -1, -1},
+        {-1, -1, -1, -1}
+    };
+    private final int relationalTable1[][] = {
+        {1, 1, -1, -1, -1},
+        {1, 1, -1, -1, -1},
+        {-1, -1, -1, -1, -1},
+        {-1, -1, -1, -1, -1},
+        {-1, -1, -1, -1, -1}
+    };
+    private final int relationalTable2[][] = {
+        {1, 1, -1, -1, -1},
+        {1, 1, -1, -1, -1},
+        {-1, -1, 1, 1, -1},
+        {-1, -1, 1, 1, -1},
+        {-1, -1, -1, -1, -1}
     };
     private final HashMap<String, HashMap> sTable = new HashMap<>();
     private final HashMap<Integer, String> datatypes = new HashMap<>();
@@ -31,6 +46,7 @@ public class Semantico {
         datatypes.put(0, "int");
         datatypes.put(1, "float");
         datatypes.put(2, "char");
+        datatypes.put(3, "litcad");
         semStack.push("$");
         stackOp.push("$");
         expPosf.push("$");
@@ -60,7 +76,14 @@ public class Semantico {
                 expPosf.push(originalToken);
                 break;
             case "litcad":
-                error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
+                if (isAsign) {
+                    error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
+                } else {
+                    if (isWhileOrIf) {
+                        semStack.push("3");
+                        expPosf.push(originalToken);
+                    }
+                }
                 break;
             default:
                 if (sTable.containsKey(originalToken)) {
@@ -171,6 +194,31 @@ public class Semantico {
                 //System.out.println(middleCodeStack);
                 break;
         }
+    }
+
+    public void EndWhileOrIf(int line) {
+        if (opType == 0) {
+            if (relationalTable1[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
+                error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
+            }
+        } else if (relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
+            error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
+        }
+    }
+
+    public void IdentifyOp(String token, int linea) {
+        if (!isAsign) {
+            switch (token) {
+                case ">", "<", ">=", "<=":
+                    opType = 0;
+                    break;
+                default:
+                    opType = 1;
+            }
+        } else {
+            error += "Error semantico en la linea " + linea + " tipo de dato inválido.\n";
+        }
+
     }
 
     public void AddExpPos(String token) {
