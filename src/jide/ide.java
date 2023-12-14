@@ -105,7 +105,7 @@ public class ide extends javax.swing.JFrame {
 
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                        if (text.substring(wordL, wordR).matches("(\\W)*(programa|procedimiento|funcion|ent|flot|car|cad|booleano|imprimir|leer|si|entonces|sn|para|incremento|decremento|paso|verdadero|falso)")) {
+                        if (text.substring(wordL, wordR).matches("(\\W)*(program|procedimiento|funcion|int|float|char|print|read|if|then|else|while|verdadero|falso)")) {
                             setCharacterAttributes(wordL, wordR - wordL, attblue, false);
                         } else {
                             setCharacterAttributes(wordL, wordR - wordL, attwhite, false);
@@ -180,6 +180,7 @@ public class ide extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Fondo.setBackground(new java.awt.Color(36, 38, 48));
+        Fondo.setMinimumSize(new java.awt.Dimension(1634, 1001));
         Fondo.setPreferredSize(new java.awt.Dimension(1634, 1001));
 
         contenedorbtnNuevo.setBackground(new java.awt.Color(36, 38, 48));
@@ -311,6 +312,7 @@ public class ide extends javax.swing.JFrame {
         contenedorbtnCompilar.add(BTNCompilar, java.awt.BorderLayout.CENTER);
 
         jTPCodigo.setBackground(new java.awt.Color(36, 38, 48));
+        jTPCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTPCodigo.setForeground(new java.awt.Color(255, 255, 255));
         jTPCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -321,6 +323,7 @@ public class ide extends javax.swing.JFrame {
 
         jTPLexico.setEditable(false);
         jTPLexico.setBackground(new java.awt.Color(36, 38, 48));
+        jTPLexico.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTPLexico.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(jTPLexico);
 
@@ -404,13 +407,13 @@ public class ide extends javax.swing.JFrame {
                         .addGroup(FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 765, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(FondoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         FondoLayout.setVerticalGroup(
             FondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,7 +451,7 @@ public class ide extends javax.swing.JFrame {
                 .addContainerGap(257, Short.MAX_VALUE))
         );
 
-        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1630, -1));
 
         jMenuBar1.setBackground(new java.awt.Color(36, 38, 48));
 

@@ -3,14 +3,16 @@ int a,b;
 float z;
 char d,c;
 {
+print("Suma de valores");
 print("Dame el primer numero");
-a=read();
-print(a);
-a=(5+8*a)- 5;
-z = a+2*z;
-while((15+2)>a)
-{
-print(a - 1);
+a=5+7/(2*2);
+z=2.5;
+d='c';
+c= read();
+if((5+7)+9>(7)*a) then{
+while(5>a){
+b= read();
+}
 }
 
 }
