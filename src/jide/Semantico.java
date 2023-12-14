@@ -79,10 +79,8 @@ public class Semantico {
                 if (isAsign) {
                     error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
                 } else {
-                    if (isWhileOrIf) {
-                        semStack.push("3");
-                        expPosf.push(originalToken);
-                    }
+                    semStack.push("3");
+                    expPosf.push(originalToken);
                 }
                 break;
             default:
@@ -173,6 +171,9 @@ public class Semantico {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
                     }
                 }
+                if (!isAsign && !isWhileOrIf) {
+                    semStack.pop();
+                }
                 if (token.equals(";")) {
                     if (!semStack.peek().equals("$") && semStack.size() <= 2) {
                         semStack.pop();
@@ -202,11 +203,13 @@ public class Semantico {
             if (relationalTable1[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
                 error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
             }
-        } else if (opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
+        } else if (isWhileOrIf && opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
             error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
         }
-        isWhileOrIf = false;
-        opType = -1;
+        if (isWhileOrIf) {
+            isWhileOrIf = false;
+            opType = -1;
+        }
     }
 
     public void IdentifyOp(String token, int linea) {
