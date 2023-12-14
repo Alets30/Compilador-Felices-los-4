@@ -96,6 +96,7 @@ public class Semantico {
     public void AddOpStack(String token, int line) {
         int semTableResult = -1;
         //System.out.println(stackOp);
+
         switch (token) {
             case "+", "-":
                 if (semStack.peek().equals("$") && stackOp.peek().equals("(")) {
@@ -171,17 +172,17 @@ public class Semantico {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
                     }
                 }
-                if (!isAsign && !isWhileOrIf) {
+                if (!isAsign && !isWhileOrIf && !semStack.peek().equals("$")) {
                     semStack.pop();
                 }
                 if (token.equals(";")) {
                     if (!semStack.peek().equals("$") && semStack.size() <= 2) {
                         semStack.pop();
-                        isAsign = false;
                     } else {
                         error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
                         return;
                     }
+                    isAsign = false;
                     //System.out.println(expPosf);
                     FlipStack();
                     //System.out.println(expPosf);

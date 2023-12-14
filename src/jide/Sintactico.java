@@ -201,9 +201,8 @@ public class Sintactico {
                     return;
                 }
             }
-            case "I35", "I34" -> {
+            case "I35", "I34" ->
                 sem.isWhileOrIf = true;
-            }
             case "I81", "I82" -> {
                 sem.EndWhileOrIf(linea);
             }
@@ -227,6 +226,8 @@ public class Sintactico {
                     middleCode = sem.middleCode;
                 }
             }
+            case 22 ->
+                sem.isAsign = false;
         }
         while (!productions[production].split("#")[1].equals("vacia")) {
             //System.out.println(productions[production].split("#")[1].split(" ")[0]);

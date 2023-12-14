@@ -1,14 +1,16 @@
-program Hola; 
+program Hola;
 int a,b;
 float z;
-char d, c;
+char d,c;
 {
-b = read();
-d = 'c';
-while((2+5*8-(5)) > 5){
-if(c == d) then {
-print('d' > c);
+print("Dame el primer numero");
+a=read();
+print(a);
+a=(5+8*a)- 5;
+z = a+2*z;
+while((15+2)>a)
+{
+print(a - 1);
 }
-a = 3 + 5.2 - z;
-}
+
 }
