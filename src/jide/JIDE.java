@@ -17,10 +17,10 @@ public class JIDE {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        String ruta = "C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo Semestre/Lenguajes y automatas II/Compilador Felices los 4/src/jide/Alexer.flex";
+        String ruta = "C:/Users/juanp/OneDrive/Documentos/Workspace/Compilador-Felices-los-4/src/jide/Alexer.flex";
         ide IDE = new ide();
 
-        generarLexer(ruta);
+        //generarLexer(ruta);
     }
 
     public static void generarLexer(String ruta) {
