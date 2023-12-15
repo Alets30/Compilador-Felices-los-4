@@ -129,7 +129,7 @@ public class Semantico {
                     //System.out.println(semStack + " " + token);
                     do {
                         expPosf.push(stackOp.pop());
-                    } while (!stackOp.peek().equals("-") && !stackOp.peek().equals("+"));
+                    } while (!stackOp.peek().equals("-") && !stackOp.peek().equals("+") && !stackOp.peek().equals("$") && !stackOp.peek().equals("("));
                     System.out.println(stackOp);
 
                     semTableResult = semTable[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())];

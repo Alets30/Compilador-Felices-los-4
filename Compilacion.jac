@@ -1,16 +1,10 @@
-program Hola;
-int a,b;
-float z;
-char d,c;
+program hola;
+int a,b,c,d;
 {
-print("Dame el primer numero");
-a=read();
+a=(a/7*(8+9));
+b=5;
 print(a);
-a=(5+8*a)- 5;
-z = a+2*z;
-while((15+2)>a)
-{
-print(a - 1);
-}
+if((a/7*(8+9))==b-(20)) then{
 
+}
 }
