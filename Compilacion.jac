@@ -1,6 +1,6 @@
 program hola;
 int a,b,c,d;
 {
-a=5/d*c;
-b=2+3/(5+7*8);
+a=b+d/8+6;
+print(a*5+78);
 }

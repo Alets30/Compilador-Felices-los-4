@@ -11,7 +11,7 @@ public class Sintactico {
     private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", ">", "!=", "==", "<=", ">=", "$", "Program",
         "bloque", "Sentencias", "SenSimple", "Dec", "restid", "Asig", "Asigrl", "lis_para", "Sigpara", "SenComp", "si", "restsi", "mientras", "R", "R'", "E", "E'", "T", "T'", "F"};
     private final String productions[] = {"Program'#Program", "Program#program idp ; Dec bloque", "Dec#int id restid ; Dec", "Dec#float id restid ; Dec", "Dec#char id restid ; Dec", "Dec#vacia", "bloque#{ Sentencias }", "restid#, id restid", "restid#vacia", "Sentencias#SenSimple Sentencias",
-        "Sentencias#SenComp Sentencias", "Sentencias#vacia", "SenSimple#print ( lis_para )", "SenSimple#Asig ;", "SenComp#si", "SenComp#mientras", "lis_para#R Sigpara", "lis_para#vacia", "Sigpara#, R Sigpara", "Sigpara#vacia", "Asig#id = Asigrl", "Asigrl#R", "Asigrl#read ( )", "si#if ( R ) then bloque restsi",
+        "Sentencias#SenComp Sentencias", "Sentencias#vacia", "SenSimple#print ( lis_para ) ;", "SenSimple#Asig ;", "SenComp#si", "SenComp#mientras", "lis_para#R Sigpara", "lis_para#vacia", "Sigpara#, R Sigpara", "Sigpara#vacia", "Asig#id = Asigrl", "Asigrl#R", "Asigrl#read ( )", "si#if ( R ) then bloque restsi",
         "restsi#else bloque", "restsi#vacia", "mientras#while ( R ) bloque", "R#E R'", "R'#< E", "R'#> E", "R'#!= E", "R'#<= E", "R'#>= E", "R'#== E", "R'#vacia", "E#+ T E'", "E#- T E'", "E#T E'", "E'#+ T E'", "E'#- T E'", "E'#vacia", "T#F T'", "T'#* F T'", "T'#/ F T'", "T'#vacia", "F#( R )", "F#id", "F#num", "F#litcar", "F#litcad"};
     private final String table[][] = {
         {"I2", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "I1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -173,14 +173,25 @@ public class Sintactico {
                 sem.asign = originalToken;
                 sem.isAsign = true;
             }
-            case "I6" ->
+            case "I6" ->{
                 sem.type = 0;
-            case "I7" ->
+                sem.middleCode += "int ";
+            }
+            case "I7" ->{
                 sem.type = 1;
-            case "I8" ->
+                sem.middleCode += "float ";
+            }
+            case "I8" ->{
                 sem.type = 2;
+                sem.middleCode += "char ";
+            }
+            case "I25" ->
+                sem.middleCode += sem.datatypes.get(sem.type) + " ";
             case "I11", "I12", "I13", "I37" -> {
                 sem.AddSymbol(originalToken, "", linea);
+            }
+            case "I17" -> {
+                sem.sentenceType = 1;
             }
             case "I48", "I51" -> {
                 sem.AddSemStack(token, originalToken, linea);
@@ -194,8 +205,14 @@ public class Sintactico {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
-            case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97", "I61", "I31" -> {
+            case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97", "I61" -> {
                 sem.AddOpStack(token, linea);
+            }
+            case "I83" -> {
+                sem.AddOpStack(token, linea);
+                if (!sem.middleCode.equals("")) {
+                    middleCode = sem.middleCode;
+                }
             }
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 sem.IdentifyOp(token, linea);
@@ -204,7 +221,7 @@ public class Sintactico {
                     return;
                 }
             }
-            case "I35", "I34" ->
+            case "I35", "I34", "I31" ->
                 sem.isWhileOrIf = true;
             case "I81", "I82" -> {
                 sem.EndWhileOrIf(linea);

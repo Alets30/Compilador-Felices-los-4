@@ -7,7 +7,7 @@ public class Semantico {
 
     public boolean isAsign = false, isWhileOrIf = false;
     public String error = "";
-    public int type, opType = -1;
+    public int type, opType = -1, sentenceType = -1, tempVar;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -32,7 +32,8 @@ public class Semantico {
         {-1, -1, -1, -1, -1}
     };
     private final HashMap<String, HashMap> sTable = new HashMap<>();
-    private final HashMap<Integer, String> datatypes = new HashMap<>();
+    public final HashMap<Integer, String> datatypes = new HashMap<>();
+    private final HashMap<Integer, String> sentenceTypes = new HashMap<>();
     private final Stack<String> semStack;
     private final Stack<String> stackOp;
     private final Stack<String> expPosf;
@@ -47,10 +48,15 @@ public class Semantico {
         datatypes.put(1, "float");
         datatypes.put(2, "char");
         datatypes.put(3, "litcad");
+        sentenceTypes.put(0, "asig");
+        sentenceTypes.put(1, "print");
+        sentenceTypes.put(2, "if");
+        sentenceTypes.put(3, "while");
         semStack.push("$");
         stackOp.push("$");
         expPosf.push("$");
         middleCodeStack.push("$");
+        tempVar = 0;
     }
 
     public void AddSymbol(String id, String value, int line) {
@@ -60,6 +66,7 @@ public class Semantico {
         symbol.put("linea", "" + line);
         //System.out.println(id);
         sTable.put(id, symbol);
+        middleCode += id + ";\n";
         //System.out.println(sTable);
     }
 
@@ -190,19 +197,11 @@ public class Semantico {
                         error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
                         return;
                     }
-                    isAsign = false;
-                    //System.out.println(expPosf);
                     FlipStack();
-                    //System.out.println(expPosf);
-                    //System.out.println(middleCodeStack);
                     GenerateMiddleCode();
-                    //System.out.println(middleCode);
-                    //System.out.println(expPosf);
+                    isAsign = false;
                 }
-                //System.out.println(semStack);
-                //System.out.println(stackOp);
-                //System.out.println(middleCode);
-                //System.out.println(middleCodeStack);
+                //System.out.println(expPosf);
                 break;
         }
     }
@@ -259,15 +258,26 @@ public class Semantico {
             if ("*+-/".contains(middleCodeStackItem)) {
                 expPosf.pop();
                 expPosf.pop();
-                variableString = "V" + expPosf.size() + " = " + "V" + expPosf.size() + " " + middleCodeStackItem + " " + "V" + (expPosf.size() + 1) + "\n";
+                variableString = "V" + expPosf.size() + " = " + "V" + expPosf.size() + " " + middleCodeStackItem + " " + "V" + (expPosf.size() + 1) + ";\n";
                 middleCode += variableString;
                 expPosf.push(variableString);
             } else {
-                middleCode += "V" + expPosf.size() + " = " + middleCodeStackItem + "\n";
+                if (expPosf.size() > tempVar) {
+                    tempVar = expPosf.size();
+                    middleCode += "float V" + tempVar + ";\n";
+                }
+
+                middleCode += "V" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
                 expPosf.push(middleCodeStackItem);
             }
         }
-        middleCode += asign + " = " + "V1" + "\n";
+        if (isAsign) {
+            middleCode += asign + " = " + "V1" + ";\n";
+        }
+        switch (sentenceType) {
+            case 1:
+                middleCode += "printf(\"%f\",V1);";
+        }
         while (expPosf.size() > 1) {
             expPosf.pop();
         }
