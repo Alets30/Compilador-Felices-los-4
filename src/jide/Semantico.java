@@ -276,7 +276,7 @@ public class Semantico {
         }
         switch (sentenceType) {
             case 1:
-                middleCode += "printf(\"%f\",V1);";
+                middleCode += "printf(\"%f\",V1);\n";
         }
         while (expPosf.size() > 1) {
             expPosf.pop();

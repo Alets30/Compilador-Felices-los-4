@@ -173,15 +173,17 @@ public class Sintactico {
                 sem.asign = originalToken;
                 sem.isAsign = true;
             }
-            case "I6" ->{
+            case "I4" ->
+                sem.middleCode = "#include <stdio.h>\n\nvoid main()\n{\n";
+            case "I6" -> {
                 sem.type = 0;
                 sem.middleCode += "int ";
             }
-            case "I7" ->{
+            case "I7" -> {
                 sem.type = 1;
                 sem.middleCode += "float ";
             }
-            case "I8" ->{
+            case "I8" -> {
                 sem.type = 2;
                 sem.middleCode += "char ";
             }
@@ -272,6 +274,7 @@ public class Sintactico {
         }
         if (productions[production].equals(productions[0])) {
             result += productions[0] + " Acepta la cadena";
+            middleCode += "}";
         }
     }
 
