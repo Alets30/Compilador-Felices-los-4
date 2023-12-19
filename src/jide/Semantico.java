@@ -63,6 +63,14 @@ public class Semantico {
         //System.out.println(sTable);
     }
 
+    public String SearchSymbol(String symbol, int line) {
+        if (!sTable.containsKey(symbol)) {
+            return "Error semantico en la linea " + line + " el elemento " + symbol + " no se ha declarado.\n";
+        } else {
+            return "";
+        }
+    }
+
     public void AddSemStack(String token, String originalToken, int line) {
         switch (token) {
             case "num":
@@ -187,8 +195,8 @@ public class Semantico {
                     FlipStack();
                     //System.out.println(expPosf);
                     //System.out.println(middleCodeStack);
-                    //GenerateMiddleCode();
-                    System.out.println(middleCode);
+                    GenerateMiddleCode();
+                    //System.out.println(middleCode);
                     //System.out.println(expPosf);
                 }
                 //System.out.println(semStack);
@@ -237,12 +245,13 @@ public class Semantico {
     }
 
     private void FlipStack() {
+        //System.out.println(expPosf);
         while (!expPosf.peek().equals("$")) {
-            System.out.println(middleCodeStack.push(expPosf.pop()));
+            middleCodeStack.push(expPosf.pop());
         }
     }
 
-    /*private void GenerateMiddleCode() {
+    private void GenerateMiddleCode() {
         String middleCodeStackItem, variableString;
         while (!middleCodeStack.peek().equals("$")) {
             middleCodeStackItem = middleCodeStack.pop();
@@ -258,6 +267,9 @@ public class Semantico {
                 expPosf.push(middleCodeStackItem);
             }
         }
-        middleCode += asign + " = " + "V1";
-    }*/
+        middleCode += asign + " = " + "V1" + "\n";
+        while (expPosf.size() > 1) {
+            expPosf.pop();
+        }
+    }
 }

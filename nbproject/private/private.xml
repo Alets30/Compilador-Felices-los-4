@@ -2,16 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/C:/Users/juanp/OneDrive/Documentos/Workspace/Compilador-Felices-los-4/src/jide/ide.java</file>
-            <file>file:/C:/Users/juanp/OneDrive/Documentos/Workspace/Compilador-Felices-los-4/src/jide/Semantico.java</file>
-            <file>file:/C:/Users/juanp/OneDrive/Documentos/Workspace/Compilador-Felices-los-4/src/jide/Alexer.flex</file>
-            <file>file:/C:/Users/juanp/OneDrive/Documentos/Workspace/Compilador-Felices-los-4/src/jide/Tokens.java</file>
-            <file>file:/C:/Users/juanp/OneDrive/Documentos/Workspace/Compilador-Felices-los-4/src/jide/Sintactico.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/Sintactico.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/Semantico.java</file>
+            <file>file:/C:/Users/Ettos/OneDrive/Documents/Alejandro/7mo%20Semestre/Lenguajes%20y%20automatas%20II/Compilador%20Felices%20los%204/src/jide/ide.java</file>
         </group>
->>>>>>> fc63917f7bf628035d535468f5c0221bf6994d77
     </open-files>
 </project-private>

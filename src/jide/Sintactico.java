@@ -166,9 +166,12 @@ public class Sintactico {
         stack.push(estado);
         switch (estado) {
             case "I21" -> {
+                error += sem.SearchSymbol(originalToken, linea);
+                if (!error.equals("")) {
+                    return;
+                }
                 sem.asign = originalToken;
                 sem.isAsign = true;
-                //sem.middleCode += "V1 = " + originalToken + "\n";
             }
             case "I6" ->
                 sem.type = 0;

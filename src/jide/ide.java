@@ -607,7 +607,7 @@ public class ide extends javax.swing.JFrame {
                     //Si se ha llegado al final del archivo, se agrega el carácter "$" a la cadena resultado y se muestra en el componente jTPLexico.
                     jTPLexico.setText(resultado);
                     JTPSintactico.setText(obs.Resultado());
-                    //JTPCI.setText(obs.middleCode);
+                    JTPCI.setText(obs.middleCode);
                     return;
                 }
                 switch (tokens) {
