@@ -1,15 +1,16 @@
-program hola;
-int a,b,c,d;
-char z;
+program Hola;
+int a, g;
+float b,c;
+char d,e;
 {
-a=b+2;
-if(a+6<5+5*8) then{
-if(b- 5>=2) then {
+a=read();
+if(a<5) then {
+b=5+5*7;
+print(b);
 }
-} 
-else{
-if(b- 5>=2) then {
+else
+{
+c=6+6*9;
+print(c);
 }
-}
-if(1>2) then {}
 }

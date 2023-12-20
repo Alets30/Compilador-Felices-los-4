@@ -246,7 +246,7 @@ public class Semantico {
 
     public void IdentifyOp(String token, int linea) {
         relationalOp = token;
-        
+
         if (!isAsign) {
             switch (token) {
                 case ">", "<", ">=", "<=":
@@ -291,23 +291,45 @@ public class Semantico {
         String middleCodeStackItem, variableString;
         switch (sentenceType) {
             case 2:
-                while (!middleCodeStack.peek().equals("$")) {
-                    middleCodeStackItem = middleCodeStack.pop();
-                    //System.out.println(expPosf.size());
-                    if ("*+-/".contains(middleCodeStackItem)) {
-                        expPosf.pop();
-                        expPosf.pop();
-                        variableString = "Vi" + expPosf.size() + " = " + "Vi" + expPosf.size() + " " + middleCodeStackItem + " " + "Vi" + (expPosf.size() + 1) + ";\n";
-                        middleCode += variableString;
-                        expPosf.push(variableString);
-                    } else {
-                        if (expPosf.size() > tempVarIf) {
-                            tempVarIf = expPosf.size();
-                            middleCode += "float Vi" + tempVarIf + ";\n";
-                        }
+                if (!isAsign) {
+                    while (!middleCodeStack.peek().equals("$")) {
+                        middleCodeStackItem = middleCodeStack.pop();
+                        //System.out.println(expPosf.size());
+                        if ("*+-/".contains(middleCodeStackItem)) {
+                            expPosf.pop();
+                            expPosf.pop();
+                            variableString = "Vi" + expPosf.size() + " = " + "Vi" + expPosf.size() + " " + middleCodeStackItem + " " + "Vi" + (expPosf.size() + 1) + ";\n";
+                            middleCode += variableString;
+                            expPosf.push(variableString);
+                        } else {
+                            if (expPosf.size() > tempVarIf) {
+                                tempVarIf = expPosf.size();
+                                middleCode += "float Vi" + tempVarIf + ";\n";
+                            }
 
-                        middleCode += "Vi" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
-                        expPosf.push(middleCodeStackItem);
+                            middleCode += "Vi" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
+                            expPosf.push(middleCodeStackItem);
+                        }
+                    }
+                } else {
+                    while (!middleCodeStack.peek().equals("$")) {
+                        middleCodeStackItem = middleCodeStack.pop();
+                        //System.out.println(expPosf.size());
+                        if ("*+-/".contains(middleCodeStackItem)) {
+                            expPosf.pop();
+                            expPosf.pop();
+                            variableString = "V" + expPosf.size() + " = " + "V" + expPosf.size() + " " + middleCodeStackItem + " " + "V" + (expPosf.size() + 1) + ";\n";
+                            middleCode += variableString;
+                            expPosf.push(variableString);
+                        } else {
+                            if (expPosf.size() > tempVar) {
+                                tempVar = expPosf.size();
+                                middleCode += "float V" + tempVar + ";\n";
+                            }
+
+                            middleCode += "V" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
+                            expPosf.push(middleCodeStackItem);
+                        }
                     }
                 }
                 break;
