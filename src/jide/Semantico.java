@@ -8,7 +8,7 @@ public class Semantico {
     public boolean isAsign = false, isWhileOrIf = false, isElse = false;
     public String error = "";
     public String relationalOp = "";
-    public int type, opType = -1, sentenceType = -1, tempVar, tempVarIf, controlIf = 0, controlWhile = 0;
+    public int type, opType = -1, sentenceType = -1, tempVar, tempVarIf, majorIf = 0, controlWhile = 0;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -39,11 +39,13 @@ public class Semantico {
     private final Stack<String> stackOp;
     private final Stack<String> expPosf;
     private final Stack<String> middleCodeStack;
+    public final Stack<String> ifStack;
 
     public Semantico() {
         semStack = new Stack();
         stackOp = new Stack();
         expPosf = new Stack();
+        ifStack = new Stack();
         middleCodeStack = new Stack();
         datatypes.put(0, "int");
         datatypes.put(1, "float");
@@ -54,6 +56,7 @@ public class Semantico {
         sentenceTypes.put(2, "if");
         sentenceTypes.put(3, "while");
         semStack.push("$");
+        ifStack.push("$");
         stackOp.push("$");
         expPosf.push("$");
         middleCodeStack.push("$");
@@ -219,7 +222,7 @@ public class Semantico {
                 switch (sentenceType) {
                     case 2 -> {
                         middleCode += "if(!Vi1)\n";
-                        middleCode += "goto Else" + controlIf + ";\n";
+                        middleCode += "goto Else" + ifStack.peek() + ";\n";
                     }
                 }
             }
@@ -232,7 +235,7 @@ public class Semantico {
             switch (sentenceType) {
                 case 2 -> {
                     middleCode += "if(!V1)\n";
-                    middleCode += "goto Else" + controlIf + ";\n";
+                    middleCode += "goto Else" + ifStack.peek() + ";\n";
                 }
             }
         }
@@ -243,6 +246,7 @@ public class Semantico {
 
     public void IdentifyOp(String token, int linea) {
         relationalOp = token;
+        
         if (!isAsign) {
             switch (token) {
                 case ">", "<", ">=", "<=":

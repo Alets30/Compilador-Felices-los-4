@@ -164,6 +164,7 @@ public class Sintactico {
     private void Desplazamiento(String token, String estado, int linea) {
         stack.push(token);
         stack.push(estado);
+        //System.out.println(estado);
         switch (estado) {
             case "I21" -> {
                 error += sem.SearchSymbol(originalToken, linea);
@@ -189,15 +190,6 @@ public class Sintactico {
             }
             case "I25" ->
                 sem.middleCode += sem.datatypes.get(sem.type) + " ";
-            case "I28" -> {
-                switch (sem.sentenceType) {
-                    case 2 -> {
-                        if (!sem.isElse) {
-                            sem.middleCode += "goto end_IF" + sem.controlIf + ";\nElse" + sem.controlIf + ":\n";
-                        }
-                    }
-                }
-            }
             case "I11", "I12", "I13", "I37" -> {
                 sem.AddSymbol(originalToken, "", linea);
             }
@@ -223,6 +215,7 @@ public class Sintactico {
                 sem.AddOpStack(token, linea);
             }
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
+                sem.AddOpStack(")", linea);
                 sem.IdentifyOp(token, linea);
             }
             //case "I31" ->
@@ -234,11 +227,11 @@ public class Sintactico {
             case "I81", "I82" -> {
                 sem.EndWhileOrIf(linea);
             }
-            case "I108" ->
-                sem.isElse = true;
-            case "I22" ->
-                sem.controlIf = ++sem.controlIf;
-
+            case "I22" -> {
+                sem.AddOpStack(token, linea);
+                sem.majorIf = ++sem.majorIf;
+                sem.ifStack.push("" + sem.majorIf);
+            }
         }
 
         AñadirResultado();
@@ -264,16 +257,13 @@ public class Sintactico {
             case 23, 26 -> {
                 switch (sem.sentenceType) {
                     case 2 -> {
-                        sem.middleCode += "goto end_IF" + sem.controlIf + ";\nend_IF" + sem.controlIf + ":\n";
-                        sem.controlIf = --sem.controlIf;
+                        sem.middleCode += "goto end_IF" + sem.ifStack.peek() + ";\nend_IF" + sem.ifStack.peek() + ":\n";
+                        sem.ifStack.pop();
                     }
                 }
-                if (sem.controlIf == 0) {
+                if (sem.ifStack.peek().equals("$")) {
                     sem.sentenceType = -1;
                 }
-            }
-            case 24 -> {
-                sem.isElse = false;
             }
         }
         while (!productions[production].split("#")[1].equals("vacia")) {
@@ -285,6 +275,11 @@ public class Sintactico {
         for (ip = 0; ip < tnt.length; ip++) {
             if (tnt[ip].equals(productions[production].split("#")[0])) {
                 state = Integer.parseInt(stack.peek().split("I")[1]);
+                //System.out.println(state);
+                switch (state) {
+                    case 99 ->
+                        sem.middleCode += "goto end_IF" + sem.ifStack.peek() + ";\nElse" + sem.ifStack.peek() + ":\n";
+                }
                 if (table[state][ip].equals("")) {
                     //System.out.println(state + " Aqui se muere " + ip);
                     return;
