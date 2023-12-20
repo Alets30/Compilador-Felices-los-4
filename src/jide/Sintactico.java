@@ -7,7 +7,7 @@ public class Sintactico {
     private int ip, it;
     //private boolean asign = false;
     private String result;
-    public String error, originalToken, middleCode;
+    public String error, originalToken, middleCode = "";
     private final String tnt[] = {"program", "idp", "{", "}", "print", "(", ")", "int", "float", "char", "read", "if", "then", "else", "while", ",", ";", "id", "num", "litcar", "litcad", "+", "-", "*", "/", "=", "<", ">", "!=", "==", "<=", ">=", "$", "Program",
         "bloque", "Sentencias", "SenSimple", "Dec", "restid", "Asig", "Asigrl", "lis_para", "Sigpara", "SenComp", "si", "restsi", "mientras", "R", "R'", "E", "E'", "T", "T'", "F"};
     private final String productions[] = {"Program'#Program", "Program#program idp ; Dec bloque", "Dec#int id restid ; Dec", "Dec#float id restid ; Dec", "Dec#char id restid ; Dec", "Dec#vacia", "bloque#{ Sentencias }", "restid#, id restid", "restid#vacia", "Sentencias#SenSimple Sentencias",
@@ -174,7 +174,7 @@ public class Sintactico {
                 sem.isAsign = true;
             }
             case "I4" ->
-                sem.middleCode = "#include <stdio.h>\n\nvoid main()\n{\n";
+                sem.middleCode += "#include <stdio.h>\n\nvoid main()\n{\n";
             case "I6" -> {
                 sem.type = 0;
                 sem.middleCode += "int ";
@@ -212,16 +212,9 @@ public class Sintactico {
             }
             case "I83" -> {
                 sem.AddOpStack(token, linea);
-                if (!sem.middleCode.equals("")) {
-                    middleCode = sem.middleCode;
-                }
             }
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 sem.IdentifyOp(token, linea);
-                if (!sem.error.equals("")) {
-                    error += sem.error;
-                    return;
-                }
             }
             case "I35", "I34", "I31" ->
                 sem.isWhileOrIf = true;
@@ -244,12 +237,11 @@ public class Sintactico {
                     error += sem.error;
                     return;
                 }
-                if (!sem.middleCode.equals("")) {
-                    middleCode = sem.middleCode;
-                }
             }
-            case 22 ->
+            case 22 -> {
                 sem.isAsign = false;
+                sem.AsignReadMiddleCode();
+            }
         }
         while (!productions[production].split("#")[1].equals("vacia")) {
             //System.out.println(productions[production].split("#")[1].split(" ")[0]);
@@ -274,7 +266,7 @@ public class Sintactico {
         }
         if (productions[production].equals(productions[0])) {
             result += productions[0] + " Acepta la cadena";
-            middleCode += "}";
+            middleCode += sem.middleCode + "}";
         }
     }
 

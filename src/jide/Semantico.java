@@ -232,7 +232,18 @@ public class Semantico {
         } else {
             error += "Error semantico en la linea " + linea + " tipo de dato inválido.\n";
         }
+    }
 
+    public void AsignReadMiddleCode() {
+        middleCode += "scanf(\"";
+        switch ("" + sTable.get(asign).get("tipo")) {
+            case "0" ->
+                middleCode += "%d\", &" + asign + ");\n";
+            case "1" ->
+                middleCode += "%f\", &" + asign + ");\n";
+            case "2" ->
+                middleCode += "%c\", &" + asign + ");\n";
+        }
     }
 
     public void AddExpPos(String token) {

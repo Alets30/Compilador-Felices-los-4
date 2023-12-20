@@ -1,6 +1,9 @@
 program hola;
 int a,b,c,d;
+char z;
 {
-a=b+d/8+6;
-print(a*5+78);
+a=5+8*5+6;
+print(a);
+z=read();
+print(z);
 }
