@@ -8,7 +8,7 @@ public class Semantico {
     public boolean isAsign = false, isWhileOrIf = false, isElse = false;
     public String error = "";
     public String relationalOp = "";
-    public int type, opType = -1, sentenceType = -1, tempVar, controlIf = 0, controlWhile = 0;
+    public int type, opType = -1, sentenceType = -1, tempVar, tempVarIf, controlIf = 0, controlWhile = 0;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -58,6 +58,7 @@ public class Semantico {
         expPosf.push("$");
         middleCodeStack.push("$");
         tempVar = 0;
+        tempVarIf = 0;
     }
 
     public void AddSymbol(String id, String value, int line) {
@@ -214,10 +215,10 @@ public class Semantico {
             } else {
                 FlipStack();
                 GenerateMiddleCode();
-                middleCode += "V1 = V1 " + relationalOp + " V2;\n";
+                middleCode += "Vi1 = Vi1 " + relationalOp + " Vi2;\n";
                 switch (sentenceType) {
                     case 2 -> {
-                        middleCode += "if(!V1)\n";
+                        middleCode += "if(!Vi1)\n";
                         middleCode += "goto Else" + controlIf + ";\n";
                     }
                 }
@@ -284,24 +285,49 @@ public class Semantico {
 
     private void GenerateMiddleCode() {
         String middleCodeStackItem, variableString;
-        while (!middleCodeStack.peek().equals("$")) {
-            middleCodeStackItem = middleCodeStack.pop();
-            //System.out.println(expPosf.size());
-            if ("*+-/".contains(middleCodeStackItem)) {
-                expPosf.pop();
-                expPosf.pop();
-                variableString = "V" + expPosf.size() + " = " + "V" + expPosf.size() + " " + middleCodeStackItem + " " + "V" + (expPosf.size() + 1) + ";\n";
-                middleCode += variableString;
-                expPosf.push(variableString);
-            } else {
-                if (expPosf.size() > tempVar) {
-                    tempVar = expPosf.size();
-                    middleCode += "float V" + tempVar + ";\n";
+        switch (sentenceType) {
+            case 2:
+                while (!middleCodeStack.peek().equals("$")) {
+                    middleCodeStackItem = middleCodeStack.pop();
+                    //System.out.println(expPosf.size());
+                    if ("*+-/".contains(middleCodeStackItem)) {
+                        expPosf.pop();
+                        expPosf.pop();
+                        variableString = "Vi" + expPosf.size() + " = " + "Vi" + expPosf.size() + " " + middleCodeStackItem + " " + "Vi" + (expPosf.size() + 1) + ";\n";
+                        middleCode += variableString;
+                        expPosf.push(variableString);
+                    } else {
+                        if (expPosf.size() > tempVarIf) {
+                            tempVarIf = expPosf.size();
+                            middleCode += "float Vi" + tempVarIf + ";\n";
+                        }
+
+                        middleCode += "Vi" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
+                        expPosf.push(middleCodeStackItem);
+                    }
+                }
+                break;
+            default:
+                while (!middleCodeStack.peek().equals("$")) {
+                    middleCodeStackItem = middleCodeStack.pop();
+                    //System.out.println(expPosf.size());
+                    if ("*+-/".contains(middleCodeStackItem)) {
+                        expPosf.pop();
+                        expPosf.pop();
+                        variableString = "V" + expPosf.size() + " = " + "V" + expPosf.size() + " " + middleCodeStackItem + " " + "V" + (expPosf.size() + 1) + ";\n";
+                        middleCode += variableString;
+                        expPosf.push(variableString);
+                    } else {
+                        if (expPosf.size() > tempVar) {
+                            tempVar = expPosf.size();
+                            middleCode += "float V" + tempVar + ";\n";
+                        }
+
+                        middleCode += "V" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
+                        expPosf.push(middleCodeStackItem);
+                    }
                 }
 
-                middleCode += "V" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
-                expPosf.push(middleCodeStackItem);
-            }
         }
         if (isAsign) {
             middleCode += asign + " = " + "V1" + ";\n";

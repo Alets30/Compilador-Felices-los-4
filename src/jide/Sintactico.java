@@ -201,9 +201,9 @@ public class Sintactico {
             case "I11", "I12", "I13", "I37" -> {
                 sem.AddSymbol(originalToken, "", linea);
             }
-            case "I17" -> {
+            /*case "I17" -> {
                 sem.sentenceType = 1;
-            }
+            }*/
             case "I48", "I51" -> {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
@@ -225,8 +225,8 @@ public class Sintactico {
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 sem.IdentifyOp(token, linea);
             }
-            case "I31" ->
-                sem.sentenceType = 1;
+            //case "I31" ->
+            //sem.sentenceType = 1;
             case "I34" ->
                 sem.sentenceType = 2;
             case "I35" ->
@@ -236,9 +236,7 @@ public class Sintactico {
             }
             case "I108" ->
                 sem.isElse = true;
-
             case "I22" ->
-
                 sem.controlIf = ++sem.controlIf;
 
         }
@@ -266,12 +264,13 @@ public class Sintactico {
             case 23, 26 -> {
                 switch (sem.sentenceType) {
                     case 2 -> {
-                        /*yanotengoawa*/ sem.controlIf = --sem.controlIf;
                         sem.middleCode += "goto end_IF" + sem.controlIf + ";\nend_IF" + sem.controlIf + ":\n";
-
+                        sem.controlIf = --sem.controlIf;
                     }
                 }
-                sem.sentenceType = -1;
+                if (sem.controlIf == 0) {
+                    sem.sentenceType = -1;
+                }
             }
             case 24 -> {
                 sem.isElse = false;
