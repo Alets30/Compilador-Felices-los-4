@@ -8,7 +8,7 @@ public class Semantico {
     public boolean isAsign = false, isWhileOrIf = false, isElse = false;
     public String error = "";
     public String relationalOp = "";
-    public int type, opType = -1, sentenceType = -1, tempVar;
+    public int type, opType = -1, sentenceType = -1, tempVar, controlIf = 0, controlWhile = 0;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -218,7 +218,7 @@ public class Semantico {
                 switch (sentenceType) {
                     case 2 -> {
                         middleCode += "if(!V1)\n";
-                        middleCode += "goto Else;\n";
+                        middleCode += "goto Else" + controlIf + ";\n";
                     }
                 }
             }
@@ -231,7 +231,7 @@ public class Semantico {
             switch (sentenceType) {
                 case 2 -> {
                     middleCode += "if(!V1)\n";
-                    middleCode += "goto Else;\n";
+                    middleCode += "goto Else" + controlIf + ";\n";
                 }
             }
         }

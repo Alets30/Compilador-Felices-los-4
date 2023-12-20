@@ -26,7 +26,7 @@ public class JIDE {
     public static void generarLexer(String ruta) {
         File archivo = new File(ruta);
         //System.out.println(archivo);
-        JFlex.Main.generate(archivo);
+        //JFlex.Main.generate(archivo);
     }
 
 }

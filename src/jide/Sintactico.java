@@ -193,7 +193,7 @@ public class Sintactico {
                 switch (sem.sentenceType) {
                     case 2 -> {
                         if (!sem.isElse) {
-                            sem.middleCode += "goto end_IF; \nElse:\n";
+                            sem.middleCode += "goto end_IF" + sem.controlIf + ";\nElse" + sem.controlIf + ":\n";
                         }
                     }
                 }
@@ -236,7 +236,13 @@ public class Sintactico {
             }
             case "I108" ->
                 sem.isElse = true;
+
+            case "I22" ->
+
+                sem.controlIf = ++sem.controlIf;
+
         }
+
         AñadirResultado();
         //System.out.println(result);
     }
@@ -259,8 +265,11 @@ public class Sintactico {
             }
             case 23, 26 -> {
                 switch (sem.sentenceType) {
-                    case 2 ->
-                        sem.middleCode += "goto end_IF;\nend_IF:\n";
+                    case 2 -> {
+                        /*yanotengoawa*/ sem.controlIf = --sem.controlIf;
+                        sem.middleCode += "goto end_IF" + sem.controlIf + ";\nend_IF" + sem.controlIf + ":\n";
+
+                    }
                 }
                 sem.sentenceType = -1;
             }
