@@ -189,6 +189,15 @@ public class Sintactico {
             }
             case "I25" ->
                 sem.middleCode += sem.datatypes.get(sem.type) + " ";
+            case "I28" -> {
+                switch (sem.sentenceType) {
+                    case 2 -> {
+                        if (!sem.isElse) {
+                            sem.middleCode += "goto end_IF; \nElse:\n";
+                        }
+                    }
+                }
+            }
             case "I11", "I12", "I13", "I37" -> {
                 sem.AddSymbol(originalToken, "", linea);
             }
@@ -216,11 +225,17 @@ public class Sintactico {
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 sem.IdentifyOp(token, linea);
             }
-            case "I35", "I34", "I31" ->
-                sem.isWhileOrIf = true;
+            case "I31" ->
+                sem.sentenceType = 1;
+            case "I34" ->
+                sem.sentenceType = 2;
+            case "I35" ->
+                sem.sentenceType = 3;
             case "I81", "I82" -> {
                 sem.EndWhileOrIf(linea);
             }
+            case "I108" ->
+                sem.isElse = true;
         }
         AñadirResultado();
         //System.out.println(result);
@@ -241,6 +256,16 @@ public class Sintactico {
             case 22 -> {
                 sem.isAsign = false;
                 sem.AsignReadMiddleCode();
+            }
+            case 23, 26 -> {
+                switch (sem.sentenceType) {
+                    case 2 ->
+                        sem.middleCode += "goto end_IF;\nend_IF:\n";
+                }
+                sem.sentenceType = -1;
+            }
+            case 24 -> {
+                sem.isElse = false;
             }
         }
         while (!productions[production].split("#")[1].equals("vacia")) {

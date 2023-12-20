@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 public class Semantico {
 
-    public boolean isAsign = false, isWhileOrIf = false;
+    public boolean isAsign = false, isWhileOrIf = false, isElse = false;
     public String error = "";
+    public String relationalOp = "";
     public int type, opType = -1, sentenceType = -1, tempVar;
     public String asign = "";
     public String middleCode = "";
@@ -187,7 +188,7 @@ public class Semantico {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
                     }
                 }
-                if (!isAsign && !isWhileOrIf && !semStack.peek().equals("$")) {
+                if (!isAsign && sentenceType < 1 && !semStack.peek().equals("$")) {
                     semStack.pop();
                 }
                 if (token.equals(";")) {
@@ -210,17 +211,37 @@ public class Semantico {
         if (opType == 0) {
             if (relationalTable1[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
                 error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
+            } else {
+                FlipStack();
+                GenerateMiddleCode();
+                middleCode += "V1 = V1 " + relationalOp + " V2;\n";
+                switch (sentenceType) {
+                    case 2 -> {
+                        middleCode += "if(!V1)\n";
+                        middleCode += "goto Else;\n";
+                    }
+                }
             }
-        } else if (isWhileOrIf && opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
+        } else if (sentenceType >= 1 && sentenceType <= 3 && opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
             error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
+        } else {
+            FlipStack();
+            GenerateMiddleCode();
+            middleCode += "V1 = V1 " + relationalOp + " V2;\n";
+            switch (sentenceType) {
+                case 2 -> {
+                    middleCode += "if(!V1)\n";
+                    middleCode += "goto Else;\n";
+                }
+            }
         }
-        if (isWhileOrIf) {
-            isWhileOrIf = false;
+        if (sentenceType >= 1 && sentenceType <= 3) {
             opType = -1;
         }
     }
 
     public void IdentifyOp(String token, int linea) {
+        relationalOp = token;
         if (!isAsign) {
             switch (token) {
                 case ">", "<", ">=", "<=":
