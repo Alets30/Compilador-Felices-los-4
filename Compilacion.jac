@@ -3,6 +3,6 @@ int a, g;
 float b,c;
 char d,e;
 {
-a=0;
-print(b);
+a=5;
+print("Este es b ", b, " y este es a ", a);
 }

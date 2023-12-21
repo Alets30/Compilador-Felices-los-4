@@ -36,6 +36,7 @@ public class Semantico {
     public final HashMap<Integer, String> datatypes = new HashMap<>();
     private final HashMap<Integer, String> sentenceTypes = new HashMap<>();
     private final Stack<String> printStack;
+    private final Stack<String> auxPrintStack;
     private final Stack<String> semStack;
     private final Stack<String> stackOp;
     private final Stack<String> expPosf;
@@ -50,6 +51,7 @@ public class Semantico {
         expPosf = new Stack();
         ifStack = new Stack();
         printStack = new Stack();
+        auxPrintStack = new Stack();
         middleCodeStack = new Stack();
         whileStack = new Stack();
         sentenceType = new Stack();
@@ -68,6 +70,7 @@ public class Semantico {
         whileStack.push("$");
         middleCodeStack.push("$");
         printStack.push("$");
+        auxPrintStack.push("$");
         sentenceType.push(-1);
         tempVar = 0;
         tempVarIf = 0;
@@ -92,7 +95,7 @@ public class Semantico {
         }
     }
 
-   public void AddSemStack(String token, String originalToken, int line) {
+    public void AddSemStack(String token, String originalToken, int line) {
         if (sentenceType.peek() == 1) {
             switch (token) {
                 case "num":
@@ -328,18 +331,17 @@ public class Semantico {
             middleCodeStack.push(expPosf.pop());
         }
     }
-    
+
     public void EndPrint() {
         middleCode += "\", ";
         while (!printStack.peek().equals("$")) {
-            ifStack.push(printStack.pop());
+            auxPrintStack.push(printStack.pop());
         }
-        while (!ifStack.peek().equals("$")) {
-            middleCode += ifStack.pop() + ((ifStack.size() == 1) ? "" : ", ");
+        while (!auxPrintStack.peek().equals("$")) {
+            middleCode += auxPrintStack.pop() + ((auxPrintStack.size() == 1) ? "" : ", ");
         }
         middleCode += ");\n";
     }
-
 
     private void GenerateMiddleCode() {
         String middleCodeStackItem, variableString;
