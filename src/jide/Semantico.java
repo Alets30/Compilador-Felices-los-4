@@ -8,7 +8,7 @@ public class Semantico {
     public boolean isAsign = false, isWhileOrIf = false, isElse = false;
     public String error = "";
     public String relationalOp = "";
-    public int type, opType = -1, sentenceType = -1, tempVar, tempVarIf, majorIf = 0, controlWhile = 0;
+    public int type, opType = -1, sentenceType = -1, tempVar, tempVarIf, majorIf = 0, tempVarWhile, majorWhile = 0;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -40,6 +40,7 @@ public class Semantico {
     private final Stack<String> expPosf;
     private final Stack<String> middleCodeStack;
     public final Stack<String> ifStack;
+    public final Stack<String> whileStack;
 
     public Semantico() {
         semStack = new Stack();
@@ -47,6 +48,7 @@ public class Semantico {
         expPosf = new Stack();
         ifStack = new Stack();
         middleCodeStack = new Stack();
+        whileStack = new Stack();
         datatypes.put(0, "int");
         datatypes.put(1, "float");
         datatypes.put(2, "char");
@@ -59,6 +61,7 @@ public class Semantico {
         ifStack.push("$");
         stackOp.push("$");
         expPosf.push("$");
+        whileStack.push("$");
         middleCodeStack.push("$");
         tempVar = 0;
         tempVarIf = 0;
@@ -218,11 +221,16 @@ public class Semantico {
             } else {
                 FlipStack();
                 GenerateMiddleCode();
-                middleCode += "Vi1 = Vi1 " + relationalOp + " Vi2;\n";
                 switch (sentenceType) {
                     case 2 -> {
+                        middleCode += "Vi1 = Vi1 " + relationalOp + " Vi2;\n";
                         middleCode += "if(!Vi1)\n";
                         middleCode += "goto Else" + ifStack.peek() + ";\n";
+                    }
+                    case 3 -> {
+                        middleCode += "Vw1 = Vw1 " + relationalOp + " Vw2;\n";
+                        middleCode += "if(!Vw1)\n";
+                        middleCode += "goto Fin_While" + whileStack.peek() + ";\n";
                     }
                 }
             }
@@ -333,6 +341,49 @@ public class Semantico {
                     }
                 }
                 break;
+            case 3:
+                if (!isAsign) {
+                    while (!middleCodeStack.peek().equals("$")) {
+                        middleCodeStackItem = middleCodeStack.pop();
+                        //System.out.println(expPosf.size());
+                        if ("*+-/".contains(middleCodeStackItem)) {
+                            expPosf.pop();
+                            expPosf.pop();
+                            variableString = "Vw" + expPosf.size() + " = " + "Vw" + expPosf.size() + " " + middleCodeStackItem + " " + "Vw" + (expPosf.size() + 1) + ";\n";
+                            middleCode += variableString;
+                            expPosf.push(variableString);
+                        } else {
+                            if (expPosf.size() > tempVarWhile) {
+                                tempVarWhile = expPosf.size();
+                                middleCode += "float Vw" + tempVarWhile + ";\n";
+                            }
+
+                            middleCode += "Vw" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
+                            expPosf.push(middleCodeStackItem);
+                        }
+                    }
+                } else {
+                    while (!middleCodeStack.peek().equals("$")) {
+                        middleCodeStackItem = middleCodeStack.pop();
+                        //System.out.println(expPosf.size());
+                        if ("*+-/".contains(middleCodeStackItem)) {
+                            expPosf.pop();
+                            expPosf.pop();
+                            variableString = "V" + expPosf.size() + " = " + "V" + expPosf.size() + " " + middleCodeStackItem + " " + "V" + (expPosf.size() + 1) + ";\n";
+                            middleCode += variableString;
+                            expPosf.push(variableString);
+                        } else {
+                            if (expPosf.size() > tempVar) {
+                                tempVar = expPosf.size();
+                                middleCode += "float V" + tempVar + ";\n";
+                            }
+
+                            middleCode += "V" + expPosf.size() + " = " + middleCodeStackItem + ";\n";
+                            expPosf.push(middleCodeStackItem);
+                        }
+                    }
+                }
+                break;
             default:
                 while (!middleCodeStack.peek().equals("$")) {
                     middleCodeStackItem = middleCodeStack.pop();
@@ -353,7 +404,6 @@ public class Semantico {
                         expPosf.push(middleCodeStackItem);
                     }
                 }
-
         }
         if (isAsign) {
             middleCode += asign + " = " + "V1" + ";\n";

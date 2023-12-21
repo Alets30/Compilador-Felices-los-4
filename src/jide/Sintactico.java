@@ -196,6 +196,11 @@ public class Sintactico {
             /*case "I17" -> {
                 sem.sentenceType = 1;
             }*/
+            case "I23" -> {
+                sem.majorWhile = ++sem.majorWhile;
+                sem.whileStack.push("" + sem.majorWhile);
+                sem.middleCode += "While" + sem.whileStack.peek() + ":\n";
+            }
             case "I48", "I51" -> {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
@@ -208,6 +213,8 @@ public class Sintactico {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
+            //I83 es el ; del print 
+            //no se va a quedar al final porque necesitamos hacer las operaciones de cada uno de los parámetros del print
             case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97", "I61", "I83" -> {
                 sem.AddOpStack(token, linea);
             }
@@ -256,10 +263,17 @@ public class Sintactico {
                     case 2 -> {
                         sem.middleCode += "goto end_IF" + sem.ifStack.peek() + ";\nend_IF" + sem.ifStack.peek() + ":\n";
                         sem.ifStack.pop();
+                        if (sem.ifStack.peek().equals("$")) {
+                            sem.sentenceType = -1;
+                        }
                     }
-                }
-                if (sem.ifStack.peek().equals("$")) {
-                    sem.sentenceType = -1;
+                    case 3 -> {
+                        sem.middleCode += "goto While" + sem.whileStack.peek() + ";\nFin_While" + sem.whileStack.peek() + ":\n";
+                        sem.whileStack.pop();
+                        if (sem.whileStack.peek().equals("$")) {
+                            sem.sentenceType = -1;
+                        }
+                    }
                 }
             }
         }
