@@ -195,6 +195,7 @@ public class Sintactico {
             }
             case "I17" -> {
                 sem.sentenceType.push(1);
+                sem.middleCode += "printf(\"";
             }
             case "I23" -> {
                 sem.majorWhile = ++sem.majorWhile;
@@ -216,8 +217,6 @@ public class Sintactico {
             case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97", "I61", "I31" -> {
                 sem.AddOpStack(token, linea);
             }
-            case "I83" ->
-                sem.sentenceType.pop();
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 sem.AddOpStack(")", linea);
                 sem.IdentifyOp(token, linea);
@@ -272,6 +271,8 @@ public class Sintactico {
                     }
                 }
             }
+            case 17 ->
+                error += "Error sintáctico en la línea " + line + " esperaba " + Error(Integer.parseInt(stack.peek().split("I")[1])) + "\n";
         }
         while (!productions[production].split("#")[1].equals("vacia")) {
             //System.out.println(productions[production].split("#")[1].split(" ")[0]);

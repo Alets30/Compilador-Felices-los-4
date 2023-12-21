@@ -35,6 +35,7 @@ public class Semantico {
     private final HashMap<String, HashMap> sTable = new HashMap<>();
     public final HashMap<Integer, String> datatypes = new HashMap<>();
     private final HashMap<Integer, String> sentenceTypes = new HashMap<>();
+    private final Stack<String> printStack;
     private final Stack<String> semStack;
     private final Stack<String> stackOp;
     private final Stack<String> expPosf;
@@ -48,6 +49,7 @@ public class Semantico {
         stackOp = new Stack();
         expPosf = new Stack();
         ifStack = new Stack();
+        printStack = new Stack();
         middleCodeStack = new Stack();
         whileStack = new Stack();
         sentenceType = new Stack();
@@ -65,6 +67,7 @@ public class Semantico {
         expPosf.push("$");
         whileStack.push("$");
         middleCodeStack.push("$");
+        printStack.push("$");
         sentenceType.push(-1);
         tempVar = 0;
         tempVarIf = 0;
@@ -90,32 +93,54 @@ public class Semantico {
     }
 
     public void AddSemStack(String token, String originalToken, int line) {
-        switch (token) {
-            case "num":
-                semStack.push("" + RecognizeNumber(originalToken));
-                expPosf.push(originalToken);
-                //System.out.println(semStack);
-                break;
-            case "litcar":
-                //System.out.println(token);
-                semStack.push("2");
-                expPosf.push(originalToken);
-                break;
-            case "litcad":
-                if (isAsign) {
-                    error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
-                } else {
-                    semStack.push("3");
+        if (sentenceType.peek() == 1) {
+            switch (token) {
+                case "num":
+                    middleCode += "%" + (RecognizeNumber(originalToken) == 1 ? "f" : "d");
+                    break;
+                case "litcar":
+                    middleCode += "%c";
+                    break;
+                case "litcad":
+                    middleCode += "%s";
+                    break;
+                default:
+                    if (sTable.containsKey(originalToken)) {
+                        middleCode += "%" + (Integer.parseInt("" + sTable.get(originalToken).get("tipo")) == 0 ? "d"
+                                : Integer.parseInt("" + sTable.get(originalToken).get("tipo")) == 1 ? "f"
+                                : Integer.parseInt("" + sTable.get(originalToken).get("tipo")) == 2 ? "c" : "s");
+                    }
+            }
+            printStack.push(originalToken);
+        } else {
+            switch (token) {
+                case "num":
+                    semStack.push("" + RecognizeNumber(originalToken));
                     expPosf.push(originalToken);
-                }
-                break;
-            default:
-                if (sTable.containsKey(originalToken)) {
-                    semStack.push("" + sTable.get(originalToken).get("tipo"));
+                    //System.out.println(semStack);
+                    break;
+                case "litcar":
+                    //System.out.println(token);
+                    semStack.push("2");
                     expPosf.push(originalToken);
-                } else {
-                    error += "Error semantico en la linea " + line + " el elemento " + originalToken + " no se ha declarado.\n";
-                }
+                    break;
+                case "litcad":
+                    if (isAsign) {
+                        error += "Error semantico en la linea " + line + " tipos de dato incompatibles.\n";
+                    } else {
+                        semStack.push("3");
+                        expPosf.push(originalToken);
+                    }
+                    break;
+                default:
+                    if (sTable.containsKey(originalToken)) {
+                        semStack.push("" + sTable.get(originalToken).get("tipo"));
+                        expPosf.push(originalToken);
+                    } else {
+                        error += "Error semantico en la linea " + line + " el elemento " + originalToken + " no se ha declarado.\n";
+                        return;
+                    }
+            }
         }
     }
 
@@ -126,7 +151,7 @@ public class Semantico {
         switch (token) {
             case "+", "-":
                 if (sentenceType.peek() == 1) {
-                    error += "Error sintáctico en la linea " + line + " esperaba: id, litcad.\n";
+                    error += "Error sintáctico en la linea " + line + " esperaba: id, litcad, litcar, num.\n";
                 }
                 if (semStack.peek().equals("$") && stackOp.peek().equals("(")) {
                     return;
@@ -153,7 +178,7 @@ public class Semantico {
             case "*", "/":
                 //System.out.println(stackOp.peek());
                 if (sentenceType.peek() == 1) {
-                    error += "Error sintáctico en la linea " + line + " esperaba: id, litcad.\n";
+                    error += "Error sintáctico en la linea " + line + " esperaba: id, litcad, litcar, num.\n";
                 }
                 if (stackOp.peek().equals("-") || stackOp.peek().equals("+") || stackOp.peek().equals("$") || stackOp.peek().equals("(")) {
                     stackOp.push(token);
@@ -416,10 +441,6 @@ public class Semantico {
         }
         if (isAsign) {
             middleCode += asign + " = " + "V1" + ";\n";
-        }
-        switch (sentenceType.peek()) {
-            case 1:
-                middleCode += "printf(\"%f\",V1);\n";
         }
         while (expPosf.size() > 1) {
             expPosf.pop();
