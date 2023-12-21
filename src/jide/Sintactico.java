@@ -221,6 +221,10 @@ public class Sintactico {
                 sem.AddOpStack(")", linea);
                 sem.IdentifyOp(token, linea);
             }
+            case "I83" -> {
+                sem.EndPrint();
+                sem.sentenceType.pop();
+            }
             //case "I31" ->
             //sem.sentenceType = 1;
             case "I34" ->

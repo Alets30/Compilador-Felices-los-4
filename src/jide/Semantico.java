@@ -328,6 +328,18 @@ public class Semantico {
             middleCodeStack.push(expPosf.pop());
         }
     }
+    
+    public void EndPrint() {
+        middleCode += "\", ";
+        while (!printStack.peek().equals("$")) {
+            ifStack.push(printStack.pop());
+        }
+        while (!ifStack.peek().equals("$")) {
+            middleCode += ifStack.pop() + ((ifStack.size() == 1) ? "" : ", ");
+        }
+        middleCode += ");\n";
+    }
+
 
     private void GenerateMiddleCode() {
         String middleCodeStackItem, variableString;
