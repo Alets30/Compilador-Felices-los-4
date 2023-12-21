@@ -193,9 +193,9 @@ public class Sintactico {
             case "I11", "I12", "I13", "I37" -> {
                 sem.AddSymbol(originalToken, "", linea);
             }
-            /*case "I17" -> {
-                sem.sentenceType = 1;
-            }*/
+            case "I17" -> {
+                sem.sentenceType.push(1);
+            }
             case "I23" -> {
                 sem.majorWhile = ++sem.majorWhile;
                 sem.whileStack.push("" + sem.majorWhile);
@@ -213,11 +213,11 @@ public class Sintactico {
                 sem.AddSemStack(token, originalToken, linea);
                 //sem.AddExpPos(originalToken);
             }
-            //I83 es el ; del print 
-            //no se va a quedar al final porque necesitamos hacer las operaciones de cada uno de los parámetros del print
-            case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97", "I61", "I83" -> {
+            case "I43", "I44", "I74", "I75", "I77", "I78", "I47", "I97", "I61", "I31" -> {
                 sem.AddOpStack(token, linea);
             }
+            case "I83" ->
+                sem.sentenceType.pop();
             case "I65", "I66", "I67", "I68", "I69", "I70" -> {
                 sem.AddOpStack(")", linea);
                 sem.IdentifyOp(token, linea);

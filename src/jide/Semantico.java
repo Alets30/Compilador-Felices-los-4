@@ -125,6 +125,9 @@ public class Semantico {
 
         switch (token) {
             case "+", "-":
+                if (sentenceType.peek() == 1) {
+                    error += "Error sintáctico en la linea " + line + " esperaba: id, litcad.\n";
+                }
                 if (semStack.peek().equals("$") && stackOp.peek().equals("(")) {
                     return;
                 }
@@ -149,6 +152,9 @@ public class Semantico {
                 break;
             case "*", "/":
                 //System.out.println(stackOp.peek());
+                if (sentenceType.peek() == 1) {
+                    error += "Error sintáctico en la linea " + line + " esperaba: id, litcad.\n";
+                }
                 if (stackOp.peek().equals("-") || stackOp.peek().equals("+") || stackOp.peek().equals("$") || stackOp.peek().equals("(")) {
                     stackOp.push(token);
                 } else {
@@ -258,7 +264,7 @@ public class Semantico {
     public void IdentifyOp(String token, int linea) {
         relationalOp = token;
 
-        if (!isAsign) {
+        if (!isAsign && sentenceType.peek() != 1) {
             switch (token) {
                 case ">", "<", ">=", "<=":
                     opType = 0;
