@@ -276,11 +276,16 @@ public class Semantico {
         } else {
             FlipStack();
             GenerateMiddleCode();
-            middleCode += "V1 = V1 " + relationalOp + " V2;\n";
             switch (sentenceType.peek()) {
                 case 2 -> {
-                    middleCode += "if(!V1)\n";
+                    middleCode += "Vi1 = Vi1 " + relationalOp + " Vi2;\n";
+                    middleCode += "if(!Vi1)\n";
                     middleCode += "goto Else" + ifStack.peek() + ";\n";
+                }
+                case 3 -> {
+                    middleCode += "Vw1 = Vw1 " + relationalOp + " Vw2;\n";
+                    middleCode += "if(!Vw1)\n";
+                    middleCode += "goto Fin_While" + whileStack.peek() + ";\n";
                 }
             }
         }
@@ -313,7 +318,7 @@ public class Semantico {
             case "1" ->
                 middleCode += "%f\", &" + asign + ");\n";
             case "2" ->
-                middleCode += "%c\", &" + asign + ");\n";
+                middleCode += " %c\", &" + asign + ");\n";
         }
     }
 
