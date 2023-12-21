@@ -92,7 +92,7 @@ public class Semantico {
         }
     }
 
-    public void AddSemStack(String token, String originalToken, int line) {
+   public void AddSemStack(String token, String originalToken, int line) {
         if (sentenceType.peek() == 1) {
             switch (token) {
                 case "num":
