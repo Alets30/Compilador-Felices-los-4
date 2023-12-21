@@ -8,7 +8,7 @@ public class Semantico {
     public boolean isAsign = false, isWhileOrIf = false, isElse = false;
     public String error = "";
     public String relationalOp = "";
-    public int type, opType = -1, sentenceType = -1, tempVar, tempVarIf, majorIf = 0, tempVarWhile, majorWhile = 0;
+    public int type, opType = -1, tempVar, tempVarIf, majorIf = 0, tempVarWhile, majorWhile = 0;
     public String asign = "";
     public String middleCode = "";
     //Tabla de operaciones semánticas
@@ -41,6 +41,7 @@ public class Semantico {
     private final Stack<String> middleCodeStack;
     public final Stack<String> ifStack;
     public final Stack<String> whileStack;
+    public final Stack<Integer> sentenceType;
 
     public Semantico() {
         semStack = new Stack();
@@ -49,6 +50,7 @@ public class Semantico {
         ifStack = new Stack();
         middleCodeStack = new Stack();
         whileStack = new Stack();
+        sentenceType = new Stack();
         datatypes.put(0, "int");
         datatypes.put(1, "float");
         datatypes.put(2, "char");
@@ -63,6 +65,7 @@ public class Semantico {
         expPosf.push("$");
         whileStack.push("$");
         middleCodeStack.push("$");
+        sentenceType.push(-1);
         tempVar = 0;
         tempVarIf = 0;
     }
@@ -195,7 +198,7 @@ public class Semantico {
                         error += "Error de tipo en la línea " + line + " tipos de dato incompatibles.";
                     }
                 }
-                if (!isAsign && sentenceType < 1 && !semStack.peek().equals("$")) {
+                if (!isAsign && sentenceType.peek() < 1 && !semStack.peek().equals("$")) {
                     semStack.pop();
                 }
                 if (token.equals(";")) {
@@ -221,7 +224,7 @@ public class Semantico {
             } else {
                 FlipStack();
                 GenerateMiddleCode();
-                switch (sentenceType) {
+                switch (sentenceType.peek()) {
                     case 2 -> {
                         middleCode += "Vi1 = Vi1 " + relationalOp + " Vi2;\n";
                         middleCode += "if(!Vi1)\n";
@@ -234,20 +237,20 @@ public class Semantico {
                     }
                 }
             }
-        } else if (sentenceType >= 1 && sentenceType <= 3 && opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
+        } else if (sentenceType.peek() >= 1 && sentenceType.peek() <= 3 && opType == -1 || relationalTable2[Integer.parseInt(semStack.pop())][Integer.parseInt(semStack.pop())] == -1) {
             error += "Error semantico en la linea " + line + " tipo de dato inválido.\n";
         } else {
             FlipStack();
             GenerateMiddleCode();
             middleCode += "V1 = V1 " + relationalOp + " V2;\n";
-            switch (sentenceType) {
+            switch (sentenceType.peek()) {
                 case 2 -> {
                     middleCode += "if(!V1)\n";
                     middleCode += "goto Else" + ifStack.peek() + ";\n";
                 }
             }
         }
-        if (sentenceType >= 1 && sentenceType <= 3) {
+        if (sentenceType.peek() >= 1 && sentenceType.peek() <= 3) {
             opType = -1;
         }
     }
@@ -297,7 +300,7 @@ public class Semantico {
 
     private void GenerateMiddleCode() {
         String middleCodeStackItem, variableString;
-        switch (sentenceType) {
+        switch (sentenceType.peek()) {
             case 2:
                 if (!isAsign) {
                     while (!middleCodeStack.peek().equals("$")) {
@@ -408,7 +411,7 @@ public class Semantico {
         if (isAsign) {
             middleCode += asign + " = " + "V1" + ";\n";
         }
-        switch (sentenceType) {
+        switch (sentenceType.peek()) {
             case 1:
                 middleCode += "printf(\"%f\",V1);\n";
         }

@@ -225,9 +225,9 @@ public class Sintactico {
             //case "I31" ->
             //sem.sentenceType = 1;
             case "I34" ->
-                sem.sentenceType = 2;
+                sem.sentenceType.push(2);
             case "I35" ->
-                sem.sentenceType = 3;
+                sem.sentenceType.push(3);
             case "I81", "I82" -> {
                 sem.EndWhileOrIf(linea);
             }
@@ -259,20 +259,16 @@ public class Sintactico {
                 sem.AsignReadMiddleCode();
             }
             case 23, 26 -> {
-                switch (sem.sentenceType) {
+                switch (sem.sentenceType.peek()) {
                     case 2 -> {
                         sem.middleCode += "goto end_IF" + sem.ifStack.peek() + ";\nend_IF" + sem.ifStack.peek() + ":\n";
                         sem.ifStack.pop();
-                        if (sem.ifStack.peek().equals("$")) {
-                            sem.sentenceType = -1;
-                        }
+                        sem.sentenceType.pop();
                     }
                     case 3 -> {
                         sem.middleCode += "goto While" + sem.whileStack.peek() + ";\nFin_While" + sem.whileStack.peek() + ":\n";
                         sem.whileStack.pop();
-                        if (sem.whileStack.peek().equals("$")) {
-                            sem.sentenceType = -1;
-                        }
+                        sem.sentenceType.pop();
                     }
                 }
             }
