@@ -755,7 +755,7 @@ public class ide extends javax.swing.JFrame {
         jTPLexico.setText("");
         JTPSintactico.setText("");
         JTPError.setText("");
-
+        JTPCI.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

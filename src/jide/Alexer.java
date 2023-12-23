@@ -830,7 +830,7 @@ int nu=0;
             return null;
           } 
           else {
-            zzScanError(ZZ_NO_MATCH);
+            return Error;
           }
       }
     }
